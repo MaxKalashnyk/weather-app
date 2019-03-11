@@ -1,0 +1,269 @@
+@import "vars";
+@import "fonts";
+@import "custom-reset";
+@import "./_mixins/custom-mixins";
+
+/* custom styles */
+
+body {
+    background-color: #c7ecee;
+    padding: 0 15px;
+}
+
+.app-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.main-title {
+    text-align: center;
+    margin-bottom: 30px;
+    margin-top: 20px;
+    font-size: 42px;
+}
+
+.search-block {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.main-search-input {
+    flex-grow: 1;
+    padding-left: 10px;
+    padding-right: 50px;
+    margin-right: 5px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.1);
+    background-image: url("#{$imagePath}/magnifying-glass.svg");
+    background-position: 98% center;
+    background-repeat: no-repeat;
+    background-size: 25px;
+    border-radius: 5px;
+    @include transition(background-color);
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+    }
+    &:focus {
+        background-color: rgba(255, 255, 255, 0.3);
+    }
+}
+
+.add-to-favourite {
+    background-image: url("#{$imagePath}/star.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: rgba(255, 255, 255, 0.1);
+    background-size: 35px;
+    border: none;
+    border-radius: 5px;
+    width: 50px;
+    height: 50px;
+    margin-right: 5px;
+    cursor: pointer;
+    @include transition(all);
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+    }
+}
+
+.temperature-units {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 5px;
+    padding: 0 10px;
+    @include transition(all);
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+    }
+}
+
+/* search result container */
+
+.city-name {
+    font-size: 32px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(66, 134, 244, 0.1);
+}
+
+.forecast-details {
+    display: flex;
+    justify-content: space-between;
+}
+
+.forecast-current {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid transparent;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.forecast-item-text {
+    margin-bottom: 5px;
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.forecast-item-text-day {
+    font-size: 24px;
+}
+
+.forecast-item-temps {
+    display: flex;
+    justify-content: space-between;
+}
+
+.forecast-item-tempcurrent {
+    font-size: 72px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.weather-icon-current {
+    font-size: 36px;
+}
+
+.temp-min,
+.temp-max {
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-size: 20px;
+    padding-left: 28px;
+    font-size: 20px;
+}
+
+.temp-min {
+    background-image: url("#{$imagePath}/cold-temperature.svg");
+    margin-right: 20px;
+}
+
+.temp-max {
+    background-image: url("#{$imagePath}/hot-thermometer.svg");
+}
+
+/* forecast days */
+
+.forecast-nearest-days,
+.user-activity-wrap {
+    display: flex;
+    justify-content: space-between;
+}
+
+.forecast-nearest-days {
+    margin-bottom: 20px;
+    margin-left: -10px;
+    height: 150px;
+}
+
+.forecast-nearest-day-item {
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    margin-left: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    @include transition(background-color);
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+    }
+}
+
+.day-forecast-weather {
+    width: 50px;
+    height: 50px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 50px;
+}
+
+.day-forecast-weather-sunny {
+    background-image: url("#{$imagePath}/animated/day.svg");
+}
+.day-forecast-weather-cloudy {
+    background-image: url("#{$imagePath}/animated/cloudy-day-3.svg");
+}
+.day-forecast-weather-snow {
+    background-image: url("#{$imagePath}/animated/snowy-5.svg");
+}
+.day-forecast-weather-rain {
+    background-image: url("#{$imagePath}/animated/rainy-3.svg");
+}
+.day-forecast-weather-thunder {
+    background-image: url("#{$imagePath}/animated/thunder.svg");
+}
+
+/* user activity items */
+
+.user-activity-wrap {
+    height: 200px;
+    margin-left: -20px;
+}
+
+.user-activity-item {
+    width: 50%;
+    margin-left: 20px;
+    padding: 20px;
+    border-radius: 5px;
+    &:last-child {
+        margin-right: 0;
+    }
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.user-activity-title {
+    text-transform: uppercase;
+}
+
+.user-activity-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.remove-button {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    background-image: url("#{$imagePath}/delete.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: rgba(255, 255, 255, 0.1);
+    background-size: 20px;
+    border: none;
+    border-radius: 5px;
+    @include transition(background-color);
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+    }
+}
+
+.user-activity-list-item {
+    margin-bottom: 5px;
+    border-bottom: 1px solid rgba(66, 134, 244, 0.1);
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.user-activity-title-fav,
+.user-activity-title-history {
+    background-position: left 2px;
+    background-repeat: no-repeat;
+    background-size: 18px;
+    padding-left: 30px;
+}
+
+.user-activity-title-fav {
+    background-image: url("#{$imagePath}/star.svg");
+}
+
+.user-activity-title-history {
+    background-image: url("#{$imagePath}/history-clock-button.svg");
+}

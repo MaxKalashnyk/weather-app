@@ -1,0 +1,28 @@
+{
+    "name": "weather-app",
+    "version": "1.0.0",
+    "main": "./src/js/index.js",
+    "scripts": {
+        "start": "parcel -p 3000 ./src/index.html",
+        "prebuild-dev": "shx rm -rf dist/",
+        "build-dev": "parcel build ./src/index.html --no-minify --public-url ./",
+        "prebuild": "shx rm -rf dist/",
+        "build": "parcel build ./src/index.html --public-url ./",
+        "publish": "push-dir --dir=dist --branch=gh-pages"
+    },
+    "author": "Maks",
+    "license": "MIT",
+    "devDependencies": {
+        "autoprefixer": "^9.4.9",
+        "babel-cli": "^6.26.0",
+        "babel-core": "^6.26.3",
+        "babel-preset-env": "^1.7.0",
+        "node-sass": "^4.11.0",
+        "parcel-bundler": "^1.11.0"
+    },
+    "dependencies": {
+        "normalize.css": "^8.0.1",
+        "src": "^1.1.2",
+        "v8-compile-cache": "^2.0.2"
+    }
+}
