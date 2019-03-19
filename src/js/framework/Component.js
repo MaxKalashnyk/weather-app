@@ -3,32 +3,41 @@ export default class Component {
         this.host = host;
         this.props = props;
         this.state = {};
-        this.bindEverything();
-        this._render();
-        this.handleSmth();
+        // this.bindEverything();
+        this.handleSmth = this.handleSmth.bind(this);
+        this._render().then(this.handleSmth);
     }
 
     updateState(nextState) {
         this.state = Object.assign({}, this.state, nextState);
+        console.log(this.state);
         this._render();
     }
 
-    bindEverything() {}
-    handleSmth() {}
+    // bindEverything() {}
+
+    handleSmth() {
+        return "some content";
+    }
 
     _render() {
-        this.host.innerHTML = "";
-        let content = this.render();
+        return new Promise((resolve, reject) => {
+            this.host.innerHTML = "";
 
-        if (!Array.isArray(content)) {
-            content = [content];
-        }
+            let content = this.render();
 
-        content
-            .map(item => this._vDomPrototypeElementToHtmlElement(item)) // [string|HTMLElement] => [HTMLElement]
-            .forEach(htmlElement => {
-                this.host.appendChild(htmlElement);
-            });
+            if (!Array.isArray(content)) {
+                content = [content];
+            }
+
+            content
+                .map(item => this._vDomPrototypeElementToHtmlElement(item)) // [string|HTMLElement] => [HTMLElement]
+                .forEach(htmlElement => {
+                    this.host.appendChild(htmlElement);
+                });
+
+            resolve(true);
+        });
     }
     /* @returns {string|[string|HTMLElement|Component]} */
     render() {

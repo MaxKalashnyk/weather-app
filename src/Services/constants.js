@@ -8,8 +8,7 @@ export const initAutocomplete = (input, callback) => {
     const autocomplete = new google.maps.places.Autocomplete(input, {
         types: ["(cities)"]
     });
-    autocomplete.addListener("place_changed", e =>
-        // callback(autocomplete.getPlace())
-        console.log(e)
+    autocomplete.addListener("place_changed", () =>
+        callback(autocomplete.getPlace())
     );
 };

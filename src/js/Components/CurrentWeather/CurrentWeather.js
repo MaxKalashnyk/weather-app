@@ -1,37 +1,20 @@
-import WeatherDataService from "../../../Services/WeatherDataService";
 import Component from "../../framework/Component";
+import AppState from "../../../Services/AppState";
 
 export default class CurrentWeather extends Component {
     constructor(host, props) {
         super(host, props);
-        this.props = {};
-        // this.onServerResponse = this.onServerResponse.bind(this);
-        // this.getWeather = this.getWeather.bind(this);
-        // WeatherDataService.subscribeForCurrentWeather(this.onServerResponse);
+        this.updateMyself = this.updateMyself.bind(this);
+        AppState.watch("CITY", this.updateMyself);
+        AppState.watch("WEATHERDATA", this.updateMyself);
     }
 
-    onServerResponse(weatherData) {
-        this.props.weatherData = weatherData;
-        return this.props;
-        // this._render();
-    }
-
-    getWeather() {
-        WeatherDataService.getCurrentWeather().then(data => {
-            // console.log(data);
-            // console.log(typeof this.onServerResponse);
-
-            this.onServerResponse(data);
-            console.log(this.props);
-        });
-    }
-
-    bindEverything() {
-        this.getWeather();
+    updateMyself(substate) {
+        this.updateState(substate);
     }
 
     render() {
-        console.log(this.props);
+        console.log(this.state);
         return [
             {
                 tag: "div",
@@ -40,13 +23,7 @@ export default class CurrentWeather extends Component {
                     {
                         tag: "div",
                         classList: ["city-name"],
-                        content: "Lisbon",
-                        eventHandlers: [
-                            {
-                                eventType: "click",
-                                handler: this.getWeather.bind(this)
-                            }
-                        ]
+                        content: "Lisbon"
                     },
                     {
                         tag: "div",
