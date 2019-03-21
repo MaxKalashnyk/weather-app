@@ -6,11 +6,13 @@ import WeatherDataService from "../../../Services/WeatherDataService";
 export default class Searchbar extends Component {
     constructor(host, props) {
         super(host, props);
+        AppState.watch("WEATHERDATA", this.getWeather);
+    }
+
+    init() {
         this.updateMyself = this.updateMyself.bind(this);
         this.getWeather = this.getWeather.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        AppState.watch("CITY", this.updateMyself);
-        AppState.watch("WEATHERDATA", this.getWeather);
     }
 
     updateMyself(substate) {
@@ -23,16 +25,14 @@ export default class Searchbar extends Component {
     }
 
     handleSubmit(place) {
-        AppState.update("CITY", {
-            value: place.name
-        });
+        this.props.city = place.name;
         AppState.update("WEATHERDATA", {
-            value: this.props.weatherData
+            weatherData: this.props.weatherData
         });
     }
 
     getWeather() {
-        WeatherDataService.getCurrentWeather().then(data => {
+        WeatherDataService.getCurrentWeather(this.props.city).then(data => {
             this.onServerResponse(data);
             console.log(this.props);
             this.updateState(this.props);
@@ -41,13 +41,13 @@ export default class Searchbar extends Component {
 
     onServerResponse(weatherData) {
         this.props.weatherData = weatherData;
-        return this.props;
+        return this.props.weatherData;
         // this._render();
     }
 
-    bindEverything() {
-        this.getWeather();
-    }
+    // bindEverything() {
+    //     this.getWeather();
+    // }
 
     render() {
         return [

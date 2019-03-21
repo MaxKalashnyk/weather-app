@@ -16,7 +16,6 @@ class AppState {
     update(entity, newValue) {
         this.watchers[entity] &&
             this.watchers[entity].forEach(watcher => watcher(newValue));
-        console.log(this.watchers["CITY"]);
     }
 }
 

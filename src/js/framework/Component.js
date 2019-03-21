@@ -2,8 +2,7 @@ export default class Component {
     constructor(host, props = {}) {
         this.host = host;
         this.props = props;
-        this.state = {};
-        // this.bindEverything();
+        this.init();
         this.handleSmth = this.handleSmth.bind(this);
         this._render().then(this.handleSmth);
     }
@@ -14,7 +13,7 @@ export default class Component {
         this._render();
     }
 
-    // bindEverything() {}
+    init() {}
 
     handleSmth() {
         return "some content";
