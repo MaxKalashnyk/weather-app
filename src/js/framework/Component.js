@@ -4,7 +4,8 @@ export default class Component {
         this.props = props;
         this.init();
         this.handleSmth = this.handleSmth.bind(this);
-        this._render().then(this.handleSmth);
+        this._render();
+        this.handleSmth();
     }
 
     updateState(nextState) {
@@ -20,23 +21,19 @@ export default class Component {
     }
 
     _render() {
-        return new Promise((resolve, reject) => {
-            this.host.innerHTML = "";
+        this.host.innerHTML = "";
 
-            let content = this.render();
+        let content = this.render();
 
-            if (!Array.isArray(content)) {
-                content = [content];
-            }
+        if (!Array.isArray(content)) {
+            content = [content];
+        }
 
-            content
-                .map(item => this._vDomPrototypeElementToHtmlElement(item)) // [string|HTMLElement] => [HTMLElement]
-                .forEach(htmlElement => {
-                    this.host.appendChild(htmlElement);
-                });
-
-            resolve(true);
-        });
+        content
+            .map(item => this._vDomPrototypeElementToHtmlElement(item)) // [string|HTMLElement] => [HTMLElement]
+            .forEach(htmlElement => {
+                this.host.appendChild(htmlElement);
+            });
     }
     /* @returns {string|[string|HTMLElement|Component]} */
     render() {
@@ -62,7 +59,7 @@ export default class Component {
         } else {
             if (element.tag) {
                 if (typeof element.tag === "function") {
-                    const container = document.createDocumentFragment();
+                    const container = document.createElement("div");
                     new element.tag(container, element.props);
 
                     return container;

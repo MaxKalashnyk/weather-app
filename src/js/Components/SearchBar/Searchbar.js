@@ -6,13 +6,22 @@ import WeatherDataService from "../../../Services/WeatherDataService";
 export default class Searchbar extends Component {
     constructor(host, props) {
         super(host, props);
-        AppState.watch("WEATHERDATA", this.getWeather);
+        AppState.watch("WEATHERDATA", this.updateMyself);
     }
 
     init() {
+        this.input = document.createElement("input");
+        this.input.type = "text";
+        this.input.setAttribute("placeholder", "Location");
+        this.input.setAttribute("required", "");
+        this.input.setAttribute("autofocus", "");
+        this.input.classList.add("main-search-input");
+
         this.updateMyself = this.updateMyself.bind(this);
         this.getWeather = this.getWeather.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+
+        // this.state = {};
     }
 
     updateMyself(substate) {
@@ -20,34 +29,22 @@ export default class Searchbar extends Component {
     }
 
     handleSmth() {
-        const input = document.querySelector(".main-search-input");
-        initAutocomplete(input, this.handleSubmit);
+        initAutocomplete(this.input, this.handleSubmit);
     }
 
     handleSubmit(place) {
         this.props.city = place.name;
-        AppState.update("WEATHERDATA", {
-            weatherData: this.props.weatherData
-        });
+        this.getWeather();
     }
 
     getWeather() {
         WeatherDataService.getCurrentWeather(this.props.city).then(data => {
-            this.onServerResponse(data);
-            console.log(this.props);
-            this.updateState(this.props);
+            this.props.weatherData = data;
+            AppState.update("WEATHERDATA", {
+                weatherData: this.props.weatherData
+            });
         });
     }
-
-    onServerResponse(weatherData) {
-        this.props.weatherData = weatherData;
-        return this.props.weatherData;
-        // this._render();
-    }
-
-    // bindEverything() {
-    //     this.getWeather();
-    // }
 
     render() {
         return [
@@ -60,20 +57,7 @@ export default class Searchbar extends Component {
                         tag: "button",
                         classList: ["add-to-favourite"]
                     },
-                    {
-                        tag: "input",
-                        classList: ["main-search-input"],
-                        attributes: [
-                            {
-                                name: "type",
-                                value: "text"
-                            },
-                            {
-                                name: "placeholder",
-                                value: "Location"
-                            }
-                        ]
-                    },
+                    this.input,
                     {
                         tag: "select",
                         classList: ["temperature-units"],

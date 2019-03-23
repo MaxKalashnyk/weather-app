@@ -12,3 +12,14 @@ export const initAutocomplete = (input, callback) => {
         callback(autocomplete.getPlace())
     );
 };
+
+export const formatValue = value => {
+    if (!value) {
+        return "";
+    }
+    return Math.round(parseFloat(value));
+};
+
+export const checkProperty = property => {
+    return property ? property : "";
+};

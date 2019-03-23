@@ -23,7 +23,8 @@
     },
     "dependencies": {
         "normalize.css": "^8.0.1",
-        "src": "^1.1.2"
+        "src": "^1.1.2",
+        "yarn": "^1.13.0"
     },
     "repository": "https://github.com/kalash14/weather-app.git"
 }

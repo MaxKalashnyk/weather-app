@@ -1,5 +1,7 @@
 import Component from "../../framework/Component";
 import AppState from "../../../Services/AppState";
+import { formatValue } from "../../../Services/constants";
+import { checkProperty } from "../../../Services/constants";
 
 export default class CurrentWeather extends Component {
     constructor(host, props) {
@@ -11,61 +13,17 @@ export default class CurrentWeather extends Component {
         this.updateState(substate);
     }
 
-    handleSmth() {
-        console.log(this.state.weatherData);
-    }
-
     init() {
+        // AppState.update("WEATHERDATA", {
+        //     weatherData: this.props.weatherData
+        // });
+        this.state = {};
         this.updateMyself = this.updateMyself.bind(this);
-        this.state = {
-            weatherData: {
-                coord: {
-                    lon: 30.52,
-                    lat: 50.43
-                },
-                weather: [
-                    {
-                        id: 800,
-                        main: "Clear",
-                        description: "clear sky",
-                        icon: "01n"
-                    }
-                ],
-                base: "stations",
-                main: {
-                    temp: 3.22,
-                    pressure: 1029,
-                    humidity: 55,
-                    temp_min: 2,
-                    temp_max: 4.44
-                },
-                visibility: 10000,
-                wind: {
-                    speed: 2,
-                    deg: 270
-                },
-                clouds: {
-                    all: 0
-                },
-                dt: 1553119791,
-                sys: {
-                    type: 1,
-                    id: 8903,
-                    message: 0.0034,
-                    country: "UA",
-                    sunrise: 1553140774,
-                    sunset: 1553184652
-                },
-                id: 703448,
-                name: "Kiev",
-                cod: 200
-            }
-        };
     }
 
     render() {
-        console.log(this.state.weatherData);
-        return this.state.weatherData !== undefined
+        console.log(this.state);
+        return this.state.hasOwnProperty("weatherData")
             ? [
                   {
                       tag: "div",
@@ -74,9 +32,9 @@ export default class CurrentWeather extends Component {
                           {
                               tag: "div",
                               classList: ["city-name"],
-                              content: this.state.weatherData
-                                  ? this.state.weatherData.name
-                                  : "Kyiv"
+                              content: checkProperty(
+                                  this.state.weatherData.name
+                              )
                           },
                           {
                               tag: "div",
@@ -106,9 +64,12 @@ export default class CurrentWeather extends Component {
                                               tag: "div",
                                               classList: [
                                                   "forecast-item-text",
-                                                  "forecast-item-text-wind"
+                                                  "forecast-item-text-pressure"
                                               ],
-                                              content: "5 m/s"
+                                              content: `${checkProperty(
+                                                  this.state.weatherData.main
+                                                      .pressure
+                                              )} mm mercury col.`
                                           },
                                           {
                                               tag: "div",
@@ -116,7 +77,10 @@ export default class CurrentWeather extends Component {
                                                   "forecast-item-text",
                                                   "forecast-item-text-humidity"
                                               ],
-                                              content: "55%",
+                                              content: `${checkProperty(
+                                                  this.state.weatherData.main
+                                                      .humidity
+                                              )} %`,
                                               children: [
                                                   {
                                                       tag: "span",
@@ -154,12 +118,18 @@ export default class CurrentWeather extends Component {
                                                   {
                                                       tag: "div",
                                                       classList: ["temp-min"],
-                                                      content: "-3&deg;"
+                                                      content: `${formatValue(
+                                                          this.state.weatherData
+                                                              .main.temp_min
+                                                      )}&deg;`
                                                   },
                                                   {
                                                       tag: "div",
                                                       classList: ["temp-max"],
-                                                      content: "10&deg;"
+                                                      content: `${formatValue(
+                                                          this.state.weatherData
+                                                              .main.temp_max
+                                                      )}&deg;`
                                                   }
                                               ]
                                           },
@@ -168,7 +138,10 @@ export default class CurrentWeather extends Component {
                                               classList: [
                                                   "forecast-item-tempcurrent"
                                               ],
-                                              content: "3&deg;"
+                                              content: `${formatValue(
+                                                  this.state.weatherData.main
+                                                      .temp
+                                              )}&deg;`
                                           }
                                       ]
                                   }
