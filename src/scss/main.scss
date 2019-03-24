@@ -110,6 +110,28 @@ body {
     font-size: 24px;
 }
 
+.forecast-item-text-icon {
+    padding-left: 2em;
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-size: 1.4em;
+}
+
+.forecast-item-text-icon-pressure {
+    background-image: url("#{$imagePath}/barometer.svg");
+}
+
+.forecast-item-text-icon-date {
+    background-image: url("#{$imagePath}/calendar.svg");
+}
+
+.forecast-item-text-icon-humidity {
+    background-image: url("#{$imagePath}/humidity.svg");
+}
+.forecast-item-text-icon-wind {
+    background-image: url("#{$imagePath}/wind.svg");
+}
+
 .forecast-item-temps {
     display: flex;
     justify-content: space-between;
@@ -122,7 +144,9 @@ body {
 }
 
 .weather-icon-current {
-    font-size: 36px;
+    font-size: 24px;
+    max-width: 6em;
+    line-height: 1.25;
 }
 
 .temp-min,

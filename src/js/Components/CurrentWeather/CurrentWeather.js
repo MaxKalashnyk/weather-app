@@ -2,6 +2,10 @@ import Component from "../../framework/Component";
 import AppState from "../../../Services/AppState";
 import { formatValue } from "../../../Services/constants";
 import { checkProperty } from "../../../Services/constants";
+import { getCurrentDate } from "../../../Services/constants";
+import { getCurrentDayName } from "../../../Services/constants";
+import { convertPressure } from "../../../Services/constants";
+import { defineWindDirection } from "../../../Services/constants";
 
 export default class CurrentWeather extends Component {
     constructor(host, props) {
@@ -14,9 +18,6 @@ export default class CurrentWeather extends Component {
     }
 
     init() {
-        // AppState.update("WEATHERDATA", {
-        //     weatherData: this.props.weatherData
-        // });
         this.state = {};
         this.updateMyself = this.updateMyself.bind(this);
     }
@@ -50,32 +51,58 @@ export default class CurrentWeather extends Component {
                                                   "forecast-item-text",
                                                   "forecast-item-text-day"
                                               ],
-                                              content: "Saturday"
+                                              content: getCurrentDayName()
                                           },
                                           {
                                               tag: "div",
                                               classList: [
                                                   "forecast-item-text",
-                                                  "forecast-item-text-date"
+                                                  "forecast-item-text-icon",
+                                                  "forecast-item-text-icon-date"
                                               ],
-                                              content: "02/03/2019"
+                                              content: getCurrentDate()
                                           },
                                           {
                                               tag: "div",
                                               classList: [
                                                   "forecast-item-text",
-                                                  "forecast-item-text-pressure"
+                                                  "forecast-item-text-icon",
+                                                  "forecast-item-text-icon-pressure"
                                               ],
-                                              content: `${checkProperty(
+                                              content: `${convertPressure(
                                                   this.state.weatherData.main
                                                       .pressure
-                                              )} mm mercury col.`
+                                              )} mm Hg`
                                           },
                                           {
                                               tag: "div",
                                               classList: [
                                                   "forecast-item-text",
-                                                  "forecast-item-text-humidity"
+                                                  "forecast-item-text-icon",
+                                                  "forecast-item-text-icon-wind"
+                                              ],
+                                              content: `${checkProperty(
+                                                  this.state.weatherData.wind
+                                                      .speed
+                                              )} m/s, ${defineWindDirection(
+                                                  this.state.weatherData.wind
+                                                      .deg
+                                              )}`,
+                                              children: [
+                                                  {
+                                                      tag: "span",
+                                                      classList: [
+                                                          "humidity-icon"
+                                                      ]
+                                                  }
+                                              ]
+                                          },
+                                          {
+                                              tag: "div",
+                                              classList: [
+                                                  "forecast-item-text",
+                                                  "forecast-item-text-icon",
+                                                  "forecast-item-text-icon-humidity"
                                               ],
                                               content: `${checkProperty(
                                                   this.state.weatherData.main
@@ -101,7 +128,10 @@ export default class CurrentWeather extends Component {
                                               classList: [
                                                   "weather-icon-current"
                                               ],
-                                              content: "Sunny"
+                                              content: `${checkProperty(
+                                                  this.state.weatherData
+                                                      .weather[0].description
+                                              )}`
                                           }
                                       ]
                                   },

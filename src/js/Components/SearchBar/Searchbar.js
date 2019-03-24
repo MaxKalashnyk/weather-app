@@ -1,12 +1,14 @@
 import Component from "../../framework/Component";
 import { initAutocomplete } from "../../../Services/constants";
+import { currentWeaterURLString } from "../../../Services/constants";
+import { weatherForecastURLString } from "../../../Services/constants";
 import AppState from "../../../Services/AppState";
 import WeatherDataService from "../../../Services/WeatherDataService";
 
 export default class Searchbar extends Component {
     constructor(host, props) {
         super(host, props);
-        AppState.watch("WEATHERDATA", this.updateMyself);
+        this.urlsArray = [];
     }
 
     init() {
@@ -18,10 +20,8 @@ export default class Searchbar extends Component {
         this.input.classList.add("main-search-input");
 
         this.updateMyself = this.updateMyself.bind(this);
-        this.getWeather = this.getWeather.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-
-        // this.state = {};
+        this.handleForecastData = this.handleForecastData.bind(this);
     }
 
     updateMyself(substate) {
@@ -34,16 +34,32 @@ export default class Searchbar extends Component {
 
     handleSubmit(place) {
         this.props.city = place.name;
-        this.getWeather();
+
+        this.urlsArray = [
+            WeatherDataService.getWeatherURLS(
+                currentWeaterURLString,
+                this.props.city
+            ),
+            WeatherDataService.getWeatherURLS(
+                weatherForecastURLString,
+                this.props.city
+            )
+        ];
+
+        WeatherDataService.getWeather(this.urlsArray, this.handleForecastData);
     }
 
-    getWeather() {
-        WeatherDataService.getCurrentWeather(this.props.city).then(data => {
-            this.props.weatherData = data;
+    handleForecastData(data) {
+        if (data && data.length > 0) {
+            this.props.weatherData = data[0];
+            this.props.weatherForecastData = data[1];
             AppState.update("WEATHERDATA", {
                 weatherData: this.props.weatherData
             });
-        });
+            AppState.update("WEATHERFORECASTDATA", {
+                weatherForecastData: this.props.weatherForecastData
+            });
+        }
     }
 
     render() {
