@@ -89,6 +89,18 @@ export const defineWindDirection = degrees => {
     }
 };
 
+export const formatDateValue = (dateString) => {
+
+    if (!dateString) {
+        return;
+    }
+
+    const firstStringPartArray = dateString.split(" ")[0].split("-");
+
+    return `${firstStringPartArray[2]}/${firstStringPartArray[1]}`;
+
+};
+
 // export const convertDate = milliseconds => {
 //     if (!milliseconds) {
 //         return "";

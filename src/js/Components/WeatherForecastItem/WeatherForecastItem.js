@@ -1,10 +1,25 @@
 import Component from "../../framework/Component";
+import AppState from "../../../Services/AppState";
+import { checkProperty } from "../../../Services/constants";
+import { formatValue } from "../../../Services/constants";
+import { formatDateValue } from "../../../Services/constants";
 
 export default class WeatherForecastItem extends Component {
     constructor(host, props) {
         super(host, props);
+        AppState.watch("WEATHERFORECASTDATA", this.updateMyself);
     }
+
+    updateMyself(substate) {
+        this.updateState(substate);
+    }
+
+    init() {
+        this.updateMyself = this.updateMyself.bind(this);
+    }
+
     render() {
+        console.log(this.props);
         return [
             {
                 tag: "div",
@@ -13,7 +28,7 @@ export default class WeatherForecastItem extends Component {
                     {
                         tag: "h3",
                         classList: ["day-title"],
-                        content: "03/03"
+                        content: formatDateValue(this.props.dt_txt)
                     },
                     {
                         tag: "div",
@@ -22,7 +37,7 @@ export default class WeatherForecastItem extends Component {
                     {
                         tag: "div",
                         classList: ["day-forecast-temp"],
-                        content: "4&deg;"
+                        content: `${formatValue(this.props.main.temp)}&deg;`
                     },
                     {
                         tag: "div",

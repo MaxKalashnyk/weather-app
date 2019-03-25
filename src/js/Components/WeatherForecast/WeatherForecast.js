@@ -17,13 +17,27 @@ export default class WeatherForecast extends Component {
         this.updateMyself = this.updateMyself.bind(this);
     }
 
+    createSortedList(list) {
+        const hoursList = [];
+        const indexesList = [3, 11, 19, 27, 35];
+
+        indexesList.forEach(item => {
+            hoursList.push(list[item]);
+        });
+
+        return hoursList;
+    }
+
     render() {
         this.props.daysList =
             this.state.weatherForecastData &&
+            // this.state.weatherForecastData.list.length > 0
+            //     ? this.state.weatherForecastData.list.filter(
+            //           (item, index) => index % 8 === 0
+            //       )
+            //     : [];
             this.state.weatherForecastData.list.length > 0
-                ? this.state.weatherForecastData.list.filter(
-                      (item, index) => index % 8 === 0
-                  )
+                ? this.createSortedList(this.state.weatherForecastData.list)
                 : [];
         return [
             {

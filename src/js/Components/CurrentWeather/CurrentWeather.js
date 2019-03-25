@@ -70,8 +70,12 @@ export default class CurrentWeather extends Component {
                                                   "forecast-item-text-icon-pressure"
                                               ],
                                               content: `${convertPressure(
-                                                  this.state.weatherData.main
-                                                      .pressure
+                                                  this.state.weatherData.main.hasOwnProperty(
+                                                      "pressure"
+                                                  )
+                                                      ? this.state.weatherData
+                                                            .main.pressure
+                                                      : ""
                                               )} mm Hg`
                                           },
                                           {
