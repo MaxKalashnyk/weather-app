@@ -3,6 +3,7 @@ import AppState from "../../../Services/AppState";
 import { checkProperty } from "../../../Services/constants";
 import { formatValue } from "../../../Services/constants";
 import { formatDateValue } from "../../../Services/constants";
+import { generateIconClass } from "../../../Services/constants";
 
 export default class WeatherForecastItem extends Component {
     constructor(host, props) {
@@ -43,7 +44,7 @@ export default class WeatherForecastItem extends Component {
                         tag: "div",
                         classList: [
                             "day-forecast-weather",
-                            "day-forecast-weather-sunny"
+                            `${generateIconClass(this.props.weather[0].icon)}`
                         ]
                     }
                 ]

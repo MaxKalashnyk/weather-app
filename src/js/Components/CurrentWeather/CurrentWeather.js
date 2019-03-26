@@ -6,6 +6,7 @@ import { getCurrentDate } from "../../../Services/constants";
 import { getCurrentDayName } from "../../../Services/constants";
 import { convertPressure } from "../../../Services/constants";
 import { defineWindDirection } from "../../../Services/constants";
+import { generateIconClass } from "../../../Services/constants";
 
 export default class CurrentWeather extends Component {
     constructor(host, props) {
@@ -130,7 +131,17 @@ export default class CurrentWeather extends Component {
                                           {
                                               tag: "div",
                                               classList: [
-                                                  "weather-icon-current"
+                                                  "weather-icon-current",
+                                                  `${generateIconClass(
+                                                      this.state.weatherData
+                                                          .weather[0].icon
+                                                  )}`
+                                              ]
+                                          },
+                                          {
+                                              tag: "div",
+                                              classList: [
+                                                  "weather-icon-description"
                                               ],
                                               content: `${checkProperty(
                                                   this.state.weatherData

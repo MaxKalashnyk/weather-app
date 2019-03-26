@@ -89,8 +89,7 @@ export const defineWindDirection = degrees => {
     }
 };
 
-export const formatDateValue = (dateString) => {
-
+export const formatDateValue = dateString => {
     if (!dateString) {
         return;
     }
@@ -98,7 +97,41 @@ export const formatDateValue = (dateString) => {
     const firstStringPartArray = dateString.split(" ")[0].split("-");
 
     return `${firstStringPartArray[2]}/${firstStringPartArray[1]}`;
+};
 
+export const generateIconClass = iconString => {
+    let finalIconClass = "";
+
+    if (!iconString) {
+        return;
+    } else {
+        if (iconString === "01d" || iconString === "01n") {
+            finalIconClass = "day-forecast-weather-sunny";
+        } else if (iconString === "02d" || iconString === "02n") {
+            finalIconClass = "day-forecast-weather-cloudy-small";
+        } else if (
+            iconString === "03d" ||
+            iconString === "04d" ||
+            iconString === "50d" ||
+            iconString === "03n" ||
+            iconString === "04n" ||
+            iconString === "50n"
+        ) {
+            finalIconClass = "day-forecast-weather-cloudy";
+        } else if (iconString === "09d" || iconString === "09n") {
+            finalIconClass = "day-forecast-weather-shower-rain";
+        } else if (iconString === "10d" || iconString === "10n") {
+            finalIconClass = "day-forecast-weather-rain";
+        } else if (iconString === "11d" || iconString === "11n") {
+            finalIconClass = "day-forecast-weather-thunder";
+        } else if (iconString === "13d" || iconString === "13n") {
+            finalIconClass = "day-forecast-weather-snow";
+        } else {
+            finalIconClass = "";
+        }
+    }
+
+    return finalIconClass;
 };
 
 // export const convertDate = milliseconds => {

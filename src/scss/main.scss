@@ -91,6 +91,10 @@ body {
     justify-content: space-between;
 }
 
+.forecast-item:nth-child(2) {
+    text-align: center;
+}
+
 .forecast-current {
     background-color: rgba(255, 255, 255, 0.1);
     border: 1px solid transparent;
@@ -144,7 +148,16 @@ body {
 }
 
 .weather-icon-current {
+    width: 100px;
+    height: 100px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100px;
+}
+
+.weather-icon-description {
     font-size: 24px;
+    font-style: italic;
     max-width: 6em;
     line-height: 1.25;
 }
@@ -209,11 +222,17 @@ body {
 .day-forecast-weather-sunny {
     background-image: url("#{$imagePath}/animated/day.svg");
 }
+.day-forecast-weather-cloudy-small {
+    background-image: url("#{$imagePath}/animated/cloudy-day-1.svg");
+}
 .day-forecast-weather-cloudy {
     background-image: url("#{$imagePath}/animated/cloudy-day-3.svg");
 }
+.day-forecast-weather-shower-rain {
+    background-image: url("#{$imagePath}/animated/rainy-7.svg");
+}
 .day-forecast-weather-snow {
-    background-image: url("#{$imagePath}/animated/snowy-5.svg");
+    background-image: url("#{$imagePath}/animated/snowy-6.svg");
 }
 .day-forecast-weather-rain {
     background-image: url("#{$imagePath}/animated/rainy-3.svg");
