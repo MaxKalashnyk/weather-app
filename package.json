@@ -22,6 +22,7 @@
         "shx": "^0.3.2"
     },
     "dependencies": {
+        "idb": "^4.0.0",
         "normalize.css": "^8.0.1",
         "src": "^1.1.2",
         "yarn": "^1.13.0"

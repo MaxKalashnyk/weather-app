@@ -24,7 +24,7 @@ export default class CurrentWeather extends Component {
     }
 
     render() {
-        console.log(this.state);
+        // console.log(this.state);
         return this.state.hasOwnProperty("weatherData")
             ? [
                   {

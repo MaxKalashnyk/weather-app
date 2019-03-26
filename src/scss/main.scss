@@ -66,6 +66,10 @@ body {
     }
 }
 
+.add-to-favourite-active {
+    background-image: url("#{$imagePath}/star-filled.svg");
+}
+
 .temperature-units {
     background-color: rgba(255, 255, 255, 0.1);
     border: none;
@@ -153,6 +157,7 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     background-size: 100px;
+    margin: 0 auto;
 }
 
 .weather-icon-description {
