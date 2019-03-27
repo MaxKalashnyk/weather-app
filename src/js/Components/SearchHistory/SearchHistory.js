@@ -18,38 +18,40 @@ export default class SearchHistory extends Component {
     render() {
         console.log(this.state);
 
-        return this.state.hasOwnProperty("recentlyViewedPlaces")
-            ? [
-                  {
-                      tag: "div",
-                      classList: ["user-activity-item"],
-                      children: [
-                          {
-                              tag: "div",
-                              classList: ["user-activity-header"],
-                              children: [
-                                  {
-                                      tag: "h3",
-                                      classList: [
-                                          "user-activity-title",
-                                          "user-activity-title-history"
-                                      ],
-                                      content: "recently viewed"
-                                  },
-                                  {
-                                      tag: "button",
-                                      classList: ["remove-button"]
-                                  }
-                              ]
-                          },
-                          {
-                              tag: "div",
-                              classList: ["user-activity-content"],
-                              children: [
-                                  {
-                                      tag: "ul",
-                                      classList: ["user-activity-list"],
-                                      children: this.state.recentlyViewedPlaces.map(
+        return [
+            {
+                tag: "div",
+                classList: ["user-activity-item"],
+                children: [
+                    {
+                        tag: "div",
+                        classList: ["user-activity-header"],
+                        children: [
+                            {
+                                tag: "h3",
+                                classList: [
+                                    "user-activity-title",
+                                    "user-activity-title-history"
+                                ],
+                                content: "recently viewed"
+                            },
+                            {
+                                tag: "button",
+                                classList: ["remove-button"]
+                            }
+                        ]
+                    },
+                    {
+                        tag: "div",
+                        classList: ["user-activity-content"],
+                        children: [
+                            {
+                                tag: "ul",
+                                classList: ["user-activity-list"],
+                                children: this.state.hasOwnProperty(
+                                    "recentlyViewedPlaces"
+                                )
+                                    ? this.state.recentlyViewedPlaces.map(
                                           placeItem => {
                                               return {
                                                   tag: "li",
@@ -67,12 +69,12 @@ export default class SearchHistory extends Component {
                                               };
                                           }
                                       )
-                                  }
-                              ]
-                          }
-                      ]
-                  }
-              ]
-            : "";
+                                    : []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ];
     }
 }

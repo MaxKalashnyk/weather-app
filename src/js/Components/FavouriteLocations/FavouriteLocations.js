@@ -5,6 +5,7 @@ export default class FavouriteLocations extends Component {
     constructor(host, props) {
         super(host, props);
         AppState.watch("FAVOURITEPLACES", this.updateMyself);
+        AppState.watch("FAVOURITEPLACECHECK", this.updateMyself);
     }
     updateMyself(substate) {
         this.updateState(substate);
@@ -15,39 +16,41 @@ export default class FavouriteLocations extends Component {
         this.updateMyself = this.updateMyself.bind(this);
     }
     render() {
-        console.log(this.state);
-        return this.state.hasOwnProperty("favouritePlaces")
-            ? [
-                  {
-                      tag: "div",
-                      classList: ["user-activity-item"],
-                      children: [
-                          {
-                              tag: "div",
-                              classList: ["user-activity-header"],
-                              children: [
-                                  {
-                                      tag: "h3",
-                                      classList: [
-                                          "user-activity-title",
-                                          "user-activity-title-fav"
-                                      ],
-                                      content: "favourite"
-                                  },
-                                  {
-                                      tag: "button",
-                                      classList: ["remove-button"]
-                                  }
-                              ]
-                          },
-                          {
-                              tag: "div",
-                              classList: ["user-activity-content"],
-                              children: [
-                                  {
-                                      tag: "ul",
-                                      classList: ["user-activity-list"],
-                                      children: this.state.favouritePlaces.map(
+        // console.log(this.state);
+        return [
+            {
+                tag: "div",
+                classList: ["user-activity-item"],
+                children: [
+                    {
+                        tag: "div",
+                        classList: ["user-activity-header"],
+                        children: [
+                            {
+                                tag: "h3",
+                                classList: [
+                                    "user-activity-title",
+                                    "user-activity-title-fav"
+                                ],
+                                content: "favourite"
+                            },
+                            {
+                                tag: "button",
+                                classList: ["remove-button"]
+                            }
+                        ]
+                    },
+                    {
+                        tag: "div",
+                        classList: ["user-activity-content"],
+                        children: [
+                            {
+                                tag: "ul",
+                                classList: ["user-activity-list"],
+                                children: this.state.hasOwnProperty(
+                                    "favouritePlaces"
+                                )
+                                    ? this.state.favouritePlaces.map(
                                           placeItem => {
                                               return {
                                                   tag: "li",
@@ -65,12 +68,12 @@ export default class FavouriteLocations extends Component {
                                               };
                                           }
                                       )
-                                  }
-                              ]
-                          }
-                      ]
-                  }
-              ]
-            : "";
+                                    : []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ];
     }
 }

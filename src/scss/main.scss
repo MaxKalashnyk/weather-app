@@ -196,14 +196,14 @@ body {
 .forecast-nearest-days {
     margin-bottom: 20px;
     margin-left: -10px;
-    height: 150px;
 }
 
-.forecast-nearest-day-item {
+.forecast-nearest-days > div {
+    height: 150px;
     flex-grow: 1;
     align-items: center;
     justify-content: center;
-    height: 100%;
+    text-align: center;
     display: flex;
     flex-direction: column;
     border-radius: 5px;
@@ -215,6 +215,23 @@ body {
         background-color: rgba(255, 255, 255, 0.3);
     }
 }
+
+// .forecast-nearest-day-item {
+//     flex-grow: 1;
+//     align-items: center;
+//     justify-content: center;
+//     height: 100%;
+//     display: flex;
+//     flex-direction: column;
+//     border-radius: 5px;
+//     margin-left: 10px;
+//     background-color: rgba(255, 255, 255, 0.1);
+//     cursor: pointer;
+//     @include transition(background-color);
+//     &:hover {
+//         background-color: rgba(255, 255, 255, 0.3);
+//     }
+// }
 
 .day-forecast-weather {
     width: 50px;
@@ -253,7 +270,7 @@ body {
     margin-left: -20px;
 }
 
-.user-activity-item {
+.user-activity-wrap > div {
     width: 50%;
     margin-left: 20px;
     padding: 20px;
@@ -263,6 +280,17 @@ body {
     }
     background-color: rgba(255, 255, 255, 0.1);
 }
+
+// .user-activity-item {
+//     width: 50%;
+//     margin-left: 20px;
+//     padding: 20px;
+//     border-radius: 5px;
+//     &:last-child {
+//         margin-right: 0;
+//     }
+//     background-color: rgba(255, 255, 255, 0.1);
+// }
 
 .user-activity-title {
     text-transform: uppercase;

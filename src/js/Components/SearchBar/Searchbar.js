@@ -12,9 +12,12 @@ export default class Searchbar extends Component {
         this.recentlyViewedPlacesArray = [];
         this.favouritePlacesArray = [];
         this.isFavouriteCheck = false;
+        AppState.watch("FAVOURITEPLACECHECK", this.updateMyself);
+        AppState.watch("FAVOURITEPLACES", this.updateMyself);
     }
 
     init() {
+        this.state = {};
         this.input = document.createElement("input");
         this.input.type = "text";
         this.input.setAttribute("placeholder", "Location");
@@ -27,8 +30,7 @@ export default class Searchbar extends Component {
             "handleSubmit",
             "handleForecastData",
             "handleFavouritePlace",
-            "checkItemAndPushToArray",
-            "checkPlaceForFavourite"
+            "checkItemAndPushToArray"
         ].forEach(
             methodName => (this[methodName] = this[methodName].bind(this))
         );
@@ -43,11 +45,18 @@ export default class Searchbar extends Component {
     }
 
     handleSubmit(place) {
-        console.log(place);
+        // console.log(place);
+        this.isFavouriteCheck = false;
+        AppState.update("FAVOURITEPLACECHECK", {
+            favouritePlaceCheck: this.isFavouriteCheck
+        });
         this.props.city = place.name;
         this.props.cityFormatted = place.formatted_address;
+        this.props.placeId = place.id;
 
         this.checkItemAndPushToArray(this.recentlyViewedPlacesArray);
+
+        this.checkFavouritePlace();
 
         this.urlsArray = [
             WeatherDataService.getWeatherURLS(
@@ -63,21 +72,46 @@ export default class Searchbar extends Component {
         WeatherDataService.getWeather(this.urlsArray, this.handleForecastData);
     }
 
-    checkItemAndPushToArray(array) {
-        console.log(array);
+    checkItemAndPushToArray(array, isFavourite = false) {
+        // console.log(array);
 
         if (
-            array.filter(
-                item =>
-                    item.place === this.props.city &&
-                    item.formattedPlace === this.props.cityFormatted
-            ).length === 0
+            array.filter(item => item.placeId === this.props.placeId).length ===
+            0
         ) {
             const placeObject = {
                 place: this.props.city,
-                formattedPlace: this.props.cityFormatted
+                formattedPlace: this.props.cityFormatted,
+                placeId: this.props.placeId
             };
             array.push(placeObject);
+            if (isFavourite) {
+                this.isFavouriteCheck = true;
+            }
+        } else {
+            if (isFavourite) {
+                this.isFavouriteCheck = false;
+                this.favouritePlacesArray = this.favouritePlacesArray.filter(
+                    item => {
+                        return item.placeId !== this.props.placeId;
+                    }
+                );
+            }
+        }
+    }
+
+    checkFavouritePlace() {
+        const matchedItem = this.favouritePlacesArray.find(item => {
+            return item.placeId === this.props.placeId;
+        });
+
+        if (matchedItem !== undefined) {
+            this.isFavouriteCheck = true;
+            AppState.update("FAVOURITEPLACECHECK", {
+                favouritePlaceCheck: this.isFavouriteCheck
+            });
+        } else {
+            this.isFavouriteCheck = false;
         }
     }
 
@@ -98,34 +132,26 @@ export default class Searchbar extends Component {
     }
 
     handleFavouritePlace() {
-        this.checkItemAndPushToArray(this.favouritePlacesArray);
+        this.checkItemAndPushToArray(this.favouritePlacesArray, true);
+        console.log(this.favouritePlacesArray);
+        AppState.update("FAVOURITEPLACECHECK", {
+            favouritePlaceCheck: this.isFavouriteCheck
+        });
         AppState.update("FAVOURITEPLACES", {
             favouritePlaces: this.favouritePlacesArray
         });
-        this.checkPlaceForFavourite();
-    }
-
-    checkPlaceForFavourite() {
-        const matchedArrayItem = this.favouritePlacesArray.find(item => {
-            return (
-                item.place === this.props.city &&
-                item.formattedPlace === this.props.cityFormatted
-            );
-        });
-
-        if (matchedArrayItem) {
-            this.isFavouriteCheck = true;
-        }
-
-        console.log(this);
     }
 
     render() {
-        const activeButtonClass = this.isFavouriteCheck
-            ? "add-to-favourite-active"
-            : "button";
+        let activeButtonClass;
 
-        console.log(activeButtonClass);
+        if (this.state.hasOwnProperty("favouritePlaceCheck")) {
+            if (this.state.favouritePlaceCheck) {
+                activeButtonClass = "add-to-favourite-active";
+            } else {
+                activeButtonClass = "button";
+            }
+        }
 
         return [
             {
@@ -135,7 +161,12 @@ export default class Searchbar extends Component {
                 children: [
                     {
                         tag: "button",
-                        classList: ["add-to-favourite", `${activeButtonClass}`],
+                        classList: [
+                            "add-to-favourite",
+                            `${
+                                activeButtonClass ? activeButtonClass : "button"
+                            }`
+                        ],
                         eventHandlers: {
                             click: this.handleFavouritePlace
                         }
