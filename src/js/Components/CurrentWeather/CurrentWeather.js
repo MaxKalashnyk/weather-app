@@ -3,7 +3,7 @@ import AppState from "../../../Services/AppState";
 import { formatValue } from "../../../Services/constants";
 import { checkProperty } from "../../../Services/constants";
 import { getCurrentDate } from "../../../Services/constants";
-import { getCurrentDayName } from "../../../Services/constants";
+import { getDayFromDateString } from "../../../Services/constants";
 import { convertPressure } from "../../../Services/constants";
 import { defineWindDirection } from "../../../Services/constants";
 import { generateIconClass } from "../../../Services/constants";
@@ -52,7 +52,9 @@ export default class CurrentWeather extends Component {
                                                   "forecast-item-text",
                                                   "forecast-item-text-day"
                                               ],
-                                              content: getCurrentDayName()
+                                              content: getDayFromDateString(
+                                                  this.state.weatherData.dt
+                                              )
                                           },
                                           {
                                               tag: "div",

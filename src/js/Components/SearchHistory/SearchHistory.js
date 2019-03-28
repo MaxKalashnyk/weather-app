@@ -13,6 +13,14 @@ export default class SearchHistory extends Component {
     init() {
         this.state = {};
         this.updateMyself = this.updateMyself.bind(this);
+        this.clearSearchHistoryList = this.clearSearchHistoryList.bind(this);
+    }
+
+    clearSearchHistoryList() {
+        this.state = {};
+        AppState.update("RECENTLYVIEWEDPLACES", {
+            recentlyViewedPlaces: []
+        });
     }
 
     render() {
@@ -37,7 +45,13 @@ export default class SearchHistory extends Component {
                             },
                             {
                                 tag: "button",
-                                classList: ["remove-button"]
+                                classList: [
+                                    "remove-button",
+                                    "remove-button-history"
+                                ],
+                                eventHandlers: {
+                                    click: this.clearSearchHistoryList
+                                }
                             }
                         ]
                     },

@@ -3,10 +3,12 @@ import AppState from "../../../Services/AppState";
 import { formatValue } from "../../../Services/constants";
 import { formatDateValue } from "../../../Services/constants";
 import { generateIconClass } from "../../../Services/constants";
+import { getDayFromDateString } from "../../../Services/constants";
 
 export default class WeatherForecastItem extends Component {
     constructor(host, props) {
         super(host, props);
+        this.state = {};
         AppState.watch("WEATHERFORECASTDATA", this.updateMyself);
         AppState.watch("WEATHERDATA", this.updateMyself);
     }
@@ -16,11 +18,13 @@ export default class WeatherForecastItem extends Component {
     }
 
     init() {
+        this.state = {};
         this.updateMyself = this.updateMyself.bind(this);
         this.updateCurrentWeather = this.updateCurrentWeather.bind(this);
     }
     updateCurrentWeather() {
         // console.log(this.props);
+
         AppState.update("WEATHERDATA", {
             weatherData: this.props
         });
@@ -40,7 +44,8 @@ export default class WeatherForecastItem extends Component {
                     },
                     {
                         tag: "div",
-                        classList: ["day-forecast-icon"]
+                        classList: ["day-forecast-dayname"],
+                        content: getDayFromDateString(this.props.dt, "short")
                     },
                     {
                         tag: "div",

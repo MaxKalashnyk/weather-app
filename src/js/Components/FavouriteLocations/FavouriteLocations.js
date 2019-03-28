@@ -15,6 +15,17 @@ export default class FavouriteLocations extends Component {
         this.state = {};
         this.updateMyself = this.updateMyself.bind(this);
     }
+
+    clearFavouritePlacesList() {
+        this.state = {};
+        AppState.update("FAVOURITEPLACES", {
+            favouritePlaces: []
+        });
+        AppState.update("FAVOURITEPLACECHECK", {
+            favouritePlaceCheck: false
+        });
+    }
+
     render() {
         // console.log(this.state);
         return [
@@ -36,7 +47,13 @@ export default class FavouriteLocations extends Component {
                             },
                             {
                                 tag: "button",
-                                classList: ["remove-button"]
+                                classList: [
+                                    "remove-button",
+                                    "remove-button-favourite"
+                                ],
+                                eventHandlers: {
+                                    click: this.clearFavouritePlacesList
+                                }
                             }
                         ]
                     },

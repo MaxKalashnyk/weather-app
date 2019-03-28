@@ -133,7 +133,7 @@ export default class Searchbar extends Component {
 
     handleFavouritePlace() {
         this.checkItemAndPushToArray(this.favouritePlacesArray, true);
-        console.log(this.favouritePlacesArray);
+        // console.log(this.favouritePlacesArray);
         AppState.update("FAVOURITEPLACECHECK", {
             favouritePlaceCheck: this.isFavouriteCheck
         });

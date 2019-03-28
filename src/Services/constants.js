@@ -134,11 +134,19 @@ export const generateIconClass = iconString => {
     return finalIconClass;
 };
 
-
 export const generateID = () => {
+    return (
+        "_" +
+        Math.random()
+            .toString(36)
+            .substr(2, 9)
+    );
+};
 
-    return '_' + Math.random().toString(36).substr(2, 9);
-
+export const getDayFromDateString = (milliseconds, type = "long") => {
+    return new Intl.DateTimeFormat("en-US", { weekday: type }).format(
+        milliseconds * 1000
+    );
 };
 
 // export const convertDate = milliseconds => {

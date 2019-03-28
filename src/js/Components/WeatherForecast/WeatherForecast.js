@@ -31,11 +31,6 @@ export default class WeatherForecast extends Component {
     render() {
         this.props.daysList =
             this.state.weatherForecastData &&
-            // this.state.weatherForecastData.list.length > 0
-            //     ? this.state.weatherForecastData.list.filter(
-            //           (item, index) => index % 8 === 0
-            //       )
-            //     : [];
             this.state.weatherForecastData.list.length > 0
                 ? this.createSortedList(this.state.weatherForecastData.list)
                 : [];

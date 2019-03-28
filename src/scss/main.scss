@@ -263,6 +263,10 @@ body {
     background-image: url("#{$imagePath}/animated/thunder.svg");
 }
 
+.day-forecast-dayname {
+    font-style: italic;
+}
+
 /* user activity items */
 
 .user-activity-wrap {
