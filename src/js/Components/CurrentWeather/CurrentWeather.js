@@ -2,7 +2,8 @@ import Component from "../../framework/Component";
 import AppState from "../../../Services/AppState";
 import { formatValue } from "../../../Services/constants";
 import { checkProperty } from "../../../Services/constants";
-import { getCurrentDate } from "../../../Services/constants";
+// import { getCurrentDate } from "../../../Services/constants";
+import { getcurrentDateString } from "../../../Services/constants";
 import { getDayFromDateString } from "../../../Services/constants";
 import { convertPressure } from "../../../Services/constants";
 import { defineWindDirection } from "../../../Services/constants";
@@ -12,6 +13,7 @@ export default class CurrentWeather extends Component {
     constructor(host, props) {
         super(host, props);
         AppState.watch("WEATHERDATA", this.updateMyself);
+        console.log(this.state);
     }
 
     updateMyself(substate) {
@@ -19,6 +21,7 @@ export default class CurrentWeather extends Component {
     }
 
     init() {
+        // console.log(this.state);
         this.state = {};
         this.updateMyself = this.updateMyself.bind(this);
     }
@@ -63,7 +66,9 @@ export default class CurrentWeather extends Component {
                                                   "forecast-item-text-icon",
                                                   "forecast-item-text-icon-date"
                                               ],
-                                              content: getCurrentDate()
+                                              content: getcurrentDateString(
+                                                  this.state.weatherData.dt
+                                              )
                                           },
                                           {
                                               tag: "div",

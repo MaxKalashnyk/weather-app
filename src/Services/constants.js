@@ -36,6 +36,15 @@ export const getCurrentDate = () => {
     return finalDate;
 };
 
+export const getcurrentDateString = milliseconds => {
+    if (!milliseconds) {
+        return;
+    }
+
+    const date = new Date(milliseconds);
+    return new Intl.DateTimeFormat("en-GB").format(date * 1000);
+};
+
 export const getCurrentDayName = () => {
     const currDate = new Date();
     const days = [

@@ -10,7 +10,7 @@ export default class Component {
 
     updateState(nextState) {
         this.state = Object.assign({}, this.state, nextState);
-        // console.log(this.state);
+        console.log(this.state);
         this._render();
     }
 

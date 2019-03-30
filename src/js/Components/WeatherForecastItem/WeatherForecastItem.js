@@ -8,7 +8,6 @@ import { getDayFromDateString } from "../../../Services/constants";
 export default class WeatherForecastItem extends Component {
     constructor(host, props) {
         super(host, props);
-        this.state = {};
         AppState.watch("WEATHERFORECASTDATA", this.updateMyself);
         AppState.watch("WEATHERDATA", this.updateMyself);
     }
@@ -25,8 +24,17 @@ export default class WeatherForecastItem extends Component {
     updateCurrentWeather() {
         // console.log(this.props);
 
+        const objectToUpdate = {
+            dt: this.props.dt,
+            wind: this.props.wind,
+            main: this.props.main,
+            weather: this.props.weather
+        };
+
+        console.log(objectToUpdate);
+
         AppState.update("WEATHERDATA", {
-            weatherData: this.props
+            weatherData: objectToUpdate
         });
     }
 
