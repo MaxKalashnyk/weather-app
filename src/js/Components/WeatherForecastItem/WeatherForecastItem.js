@@ -31,10 +31,12 @@ export default class WeatherForecastItem extends Component {
             weather: this.props.weather
         };
 
-        console.log(objectToUpdate);
+        const finalObj = Object.assign(this.props, objectToUpdate);
+
+        console.log(finalObj);
 
         AppState.update("WEATHERDATA", {
-            weatherData: objectToUpdate
+            weatherData: finalObj
         });
     }
 

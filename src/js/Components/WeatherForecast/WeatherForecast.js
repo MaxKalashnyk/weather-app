@@ -6,6 +6,7 @@ export default class WeatherForecast extends Component {
     constructor(host, props) {
         super(host, props);
         AppState.watch("WEATHERFORECASTDATA", this.updateMyself);
+        AppState.watch("WEATHERDATA", this.updateMyself);
     }
 
     updateMyself(substate) {
@@ -17,22 +18,33 @@ export default class WeatherForecast extends Component {
         this.updateMyself = this.updateMyself.bind(this);
     }
 
-    createSortedList(list) {
+    createSortedList(list, object) {
         const hoursList = [];
         const indexesList = [3, 11, 19, 27, 35];
 
         indexesList.forEach(item => {
-            hoursList.push(list[item]);
+            const rawObj = {
+                name: object.name
+            };
+            const finalObj = Object.assign(list[item], rawObj);
+            hoursList.push(finalObj);
         });
+
+        console.log(hoursList);
 
         return hoursList;
     }
 
     render() {
+        console.log(this.state);
         this.props.daysList =
             this.state.weatherForecastData &&
-            this.state.weatherForecastData.list.length > 0
-                ? this.createSortedList(this.state.weatherForecastData.list)
+            this.state.weatherForecastData.list.length > 0 &&
+            this.state.weatherData
+                ? this.createSortedList(
+                      this.state.weatherForecastData.list,
+                      this.state.weatherData
+                  )
                 : [];
         return [
             {
