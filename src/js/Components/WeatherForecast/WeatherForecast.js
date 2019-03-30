@@ -30,13 +30,13 @@ export default class WeatherForecast extends Component {
             hoursList.push(finalObj);
         });
 
-        console.log(hoursList);
+        // console.log(hoursList);
 
         return hoursList;
     }
 
     render() {
-        console.log(this.state);
+        // console.log(this.state);
         this.props.daysList =
             this.state.weatherForecastData &&
             this.state.weatherForecastData.list.length > 0 &&
