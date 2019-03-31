@@ -7,6 +7,7 @@ export default class WeatherForecast extends Component {
         super(host, props);
         AppState.watch("WEATHERFORECASTDATA", this.updateMyself);
         AppState.watch("WEATHERDATA", this.updateMyself);
+        // AppState.watch("UNITSCHECK", this.updateMyself);
     }
 
     updateMyself(substate) {

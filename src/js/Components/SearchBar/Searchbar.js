@@ -4,6 +4,7 @@ import { currentWeaterURLString } from "../../../Services/constants";
 import { weatherForecastURLString } from "../../../Services/constants";
 import AppState from "../../../Services/AppState";
 import WeatherDataService from "../../../Services/WeatherDataService";
+import UnitsToggle from "../UnitsToggle/UnitsToggle";
 
 export default class Searchbar extends Component {
     constructor(host, props) {
@@ -14,6 +15,7 @@ export default class Searchbar extends Component {
         this.isFavouriteCheck = false;
         AppState.watch("FAVOURITEPLACECHECK", this.updateMyself);
         AppState.watch("FAVOURITEPLACES", this.updateMyself);
+        // AppState.watch("UNITSCHECK", this.updateMyself);
     }
 
     init() {
@@ -173,30 +175,7 @@ export default class Searchbar extends Component {
                     },
                     this.input,
                     {
-                        tag: "select",
-                        classList: ["temperature-units"],
-                        children: [
-                            {
-                                tag: "option",
-                                attributes: [
-                                    {
-                                        name: "value",
-                                        value: "Celsius"
-                                    }
-                                ],
-                                content: "°C"
-                            },
-                            {
-                                tag: "option",
-                                attributes: [
-                                    {
-                                        name: "value",
-                                        value: "Farengheit"
-                                    }
-                                ],
-                                content: "°F"
-                            }
-                        ]
+                        tag: UnitsToggle
                     }
                 ]
             }

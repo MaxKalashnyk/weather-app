@@ -1,4 +1,5 @@
 const pascalToMmHg = 0.75006;
+const coefficientImperial = 2.2369;
 
 export const currentWeaterURLString =
     "https://api.openweathermap.org/data/2.5/weather?q=";
@@ -156,6 +157,24 @@ export const getDayFromDateString = (milliseconds, type = "long") => {
     return new Intl.DateTimeFormat("en-US", { weekday: type }).format(
         milliseconds * 1000
     );
+};
+
+export const convertTemperatureUnits = value => {
+    if (!value) {
+        return;
+    }
+
+    return (value * 1.8 + 32).toFixed(0);
+};
+
+export const convertWindUnits = value => {
+    if (!value) {
+        return;
+    }
+
+    // console.log(value);
+
+    return (value * coefficientImperial).toFixed(0);
 };
 
 // export const convertDate = milliseconds => {
