@@ -71,6 +71,7 @@ body {
 }
 
 .temperature-units {
+    height: 100%;
     background-color: rgba(255, 255, 255, 0.1);
     border: none;
     border-radius: 5px;
@@ -233,9 +234,17 @@ body {
 //     }
 // }
 
+.forecast-nearest-day-item {
+    width: 100%;
+    height: 100%;
+    padding-top: 1.5em;
+    text-align: center;
+}
+
 .day-forecast-weather {
     width: 50px;
     height: 50px;
+    margin: 0 auto;
     background-position: center;
     background-repeat: no-repeat;
     background-size: 50px;
@@ -327,8 +336,13 @@ body {
 .user-activity-list-item {
     margin-bottom: 5px;
     border-bottom: 1px solid rgba(66, 134, 244, 0.1);
+    cursor: pointer;
+    @include transition(background-color);
     &:last-child {
         margin-bottom: 0;
+    }
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
     }
 }
 

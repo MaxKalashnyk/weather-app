@@ -11,20 +11,40 @@ export default class SearchHistory extends Component {
     }
 
     init() {
-        this.state = {};
+        const storageRecentlyViewedList = localStorage.getItem(
+            "recentlyViewedPlaces"
+        )
+            ? JSON.parse(localStorage.getItem("recentlyViewedPlaces"))
+            : [];
+
+        this.state = {
+            storageRecentlyViewedList: storageRecentlyViewedList
+        };
+
         this.updateMyself = this.updateMyself.bind(this);
         this.clearSearchHistoryList = this.clearSearchHistoryList.bind(this);
     }
 
     clearSearchHistoryList() {
-        this.state = {};
+        this.state = {
+            storageRecentlyViewedList: []
+        };
         AppState.update("RECENTLYVIEWEDPLACES", {
-            recentlyViewedPlaces: []
+            storageRecentlyViewedList: []
         });
+
+        this.putItemToLocalStorage(
+            "recentlyViewedPlaces",
+            this.state.storageRecentlyViewedList
+        );
+    }
+
+    putItemToLocalStorage(key, list) {
+        localStorage.setItem(key, JSON.stringify(list));
     }
 
     render() {
-        console.log(this.state);
+        // console.log(this.state);
 
         return [
             {
@@ -62,28 +82,27 @@ export default class SearchHistory extends Component {
                             {
                                 tag: "ul",
                                 classList: ["user-activity-list"],
-                                children: this.state.hasOwnProperty(
-                                    "recentlyViewedPlaces"
+                                children: this.state.storageRecentlyViewedList.map(
+                                    placeItem => {
+                                        return {
+                                            tag: "li",
+                                            classList: [
+                                                "user-activity-list-item"
+                                            ],
+                                            content: placeItem.formattedPlace,
+                                            attributes: [
+                                                {
+                                                    name: "data-name",
+                                                    value: placeItem.place
+                                                },
+                                                {
+                                                    name: "data-placeid",
+                                                    value: placeItem.placeId
+                                                }
+                                            ]
+                                        };
+                                    }
                                 )
-                                    ? this.state.recentlyViewedPlaces.map(
-                                          placeItem => {
-                                              return {
-                                                  tag: "li",
-                                                  classList: [
-                                                      "user-activity-list-item"
-                                                  ],
-                                                  content:
-                                                      placeItem.formattedPlace,
-                                                  attributes: [
-                                                      {
-                                                          name: "data-name",
-                                                          value: placeItem.place
-                                                      }
-                                                  ]
-                                              };
-                                          }
-                                      )
-                                    : []
                             }
                         ]
                     }

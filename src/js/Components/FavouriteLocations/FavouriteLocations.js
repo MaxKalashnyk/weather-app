@@ -12,18 +12,34 @@ export default class FavouriteLocations extends Component {
     }
 
     init() {
-        this.state = {};
+        const storageFavouritePlaces = localStorage.getItem("favouritePlaces")
+            ? JSON.parse(localStorage.getItem("favouritePlaces"))
+            : [];
+
+        this.state = {
+            storageFavouritePlaces: storageFavouritePlaces
+        };
         this.updateMyself = this.updateMyself.bind(this);
     }
 
     clearFavouritePlacesList() {
-        this.state = {};
+        this.state = {
+            storageFavouritePlaces: []
+        };
         AppState.update("FAVOURITEPLACES", {
-            favouritePlaces: []
+            storageFavouritePlaces: []
         });
         AppState.update("FAVOURITEPLACECHECK", {
             favouritePlaceCheck: false
         });
+        this.putItemToLocalStorage(
+            "favouritePlaces",
+            this.state.storageFavouritePlaces
+        );
+    }
+
+    putItemToLocalStorage(key, list) {
+        localStorage.setItem(key, JSON.stringify(list));
     }
 
     render() {
@@ -64,28 +80,27 @@ export default class FavouriteLocations extends Component {
                             {
                                 tag: "ul",
                                 classList: ["user-activity-list"],
-                                children: this.state.hasOwnProperty(
-                                    "favouritePlaces"
+                                children: this.state.storageFavouritePlaces.map(
+                                    placeItem => {
+                                        return {
+                                            tag: "li",
+                                            classList: [
+                                                "user-activity-list-item"
+                                            ],
+                                            content: placeItem.formattedPlace,
+                                            attributes: [
+                                                {
+                                                    name: "data-name",
+                                                    value: placeItem.place
+                                                },
+                                                {
+                                                    name: "data-placeid",
+                                                    value: placeItem.placeId
+                                                }
+                                            ]
+                                        };
+                                    }
                                 )
-                                    ? this.state.favouritePlaces.map(
-                                          placeItem => {
-                                              return {
-                                                  tag: "li",
-                                                  classList: [
-                                                      "user-activity-list-item"
-                                                  ],
-                                                  content:
-                                                      placeItem.formattedPlace,
-                                                  attributes: [
-                                                      {
-                                                          name: "data-name",
-                                                          value: placeItem.place
-                                                      }
-                                                  ]
-                                              };
-                                          }
-                                      )
-                                    : []
                             }
                         ]
                     }
