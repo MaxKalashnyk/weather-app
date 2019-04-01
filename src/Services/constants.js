@@ -159,22 +159,24 @@ export const getDayFromDateString = (milliseconds, type = "long") => {
     );
 };
 
-export const convertTemperatureUnits = value => {
+export const convertTemperatureUnits = (value, units) => {
     if (!value) {
         return;
     }
 
-    return (value * 1.8 + 32).toFixed(0);
+    return units === "C"
+        ? `${value} &deg;C`
+        : `${(value * 1.8 + 32).toFixed(0)} &deg;F`;
 };
 
-export const convertWindUnits = value => {
+export const convertWindUnits = (value, units) => {
     if (!value) {
         return;
     }
 
-    // console.log(value);
-
-    return (value * coefficientImperial).toFixed(0);
+    return units === "C"
+        ? `${value} m/s`
+        : `${(value * coefficientImperial).toFixed(0)} mph`;
 };
 
 // export const convertDate = milliseconds => {

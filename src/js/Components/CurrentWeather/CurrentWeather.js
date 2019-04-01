@@ -15,7 +15,7 @@ export default class CurrentWeather extends Component {
     constructor(host, props) {
         super(host, props);
         AppState.watch("WEATHERDATA", this.updateMyself);
-        AppState.watch("UNITSCHECK", this.updateMyself);
+        AppState.watch("CURRENTUNIT", this.updateMyself);
         // console.log(this.state);
     }
 
@@ -24,13 +24,17 @@ export default class CurrentWeather extends Component {
     }
 
     init() {
-        console.log(this.state);
-        this.state = {};
+        const currentUnit = localStorage.getItem("currentUnit")
+            ? JSON.parse(localStorage.getItem("unit"))
+            : "C";
+        this.state = {
+            currentUnit: currentUnit
+        };
         this.updateMyself = this.updateMyself.bind(this);
     }
 
     render() {
-        console.log(this.state);
+        // console.log(this.state);
 
         return this.state.hasOwnProperty("weatherData")
             ? [
@@ -82,12 +86,8 @@ export default class CurrentWeather extends Component {
                                                   "forecast-item-text-icon-pressure"
                                               ],
                                               content: `${convertPressure(
-                                                  this.state.weatherData.main.hasOwnProperty(
-                                                      "pressure"
-                                                  )
-                                                      ? this.state.weatherData
-                                                            .main.pressure
-                                                      : ""
+                                                  this.state.weatherData.main
+                                                      .pressure
                                               )} mm Hg`
                                           },
                                           {
@@ -97,35 +97,15 @@ export default class CurrentWeather extends Component {
                                                   "forecast-item-text-icon",
                                                   "forecast-item-text-icon-wind"
                                               ],
-                                              content: this.state.hasOwnProperty(
-                                                  "isMetricUnits"
-                                              )
-                                                  ? !this.state.isMetricUnits
-                                                      ? `${convertWindUnits(
-                                                            this.state
-                                                                .weatherData
-                                                                .wind.speed
-                                                        )} mph, ${defineWindDirection(
-                                                            this.state
-                                                                .weatherData
-                                                                .wind.deg
-                                                        )}`
-                                                      : `${checkProperty(
-                                                            this.state
-                                                                .weatherData
-                                                                .wind.speed
-                                                        )} m/s, ${defineWindDirection(
-                                                            this.state
-                                                                .weatherData
-                                                                .wind.deg
-                                                        )}`
-                                                  : `${checkProperty(
-                                                        this.state.weatherData
-                                                            .wind.speed
-                                                    )} m/s, ${defineWindDirection(
-                                                        this.state.weatherData
-                                                            .wind.deg
-                                                    )}`,
+                                              content: `${convertWindUnits(
+                                                  this.state.weatherData.wind
+                                                      .speed,
+                                                  this.state.currentUnit
+                                              )}, ${defineWindDirection(
+                                                  this.state.weatherData.wind
+                                                      .deg
+                                              )}`,
+
                                               children: [
                                                   {
                                                       tag: "span",
@@ -196,56 +176,20 @@ export default class CurrentWeather extends Component {
                                                   {
                                                       tag: "div",
                                                       classList: ["temp-min"],
-                                                      content: this.state.hasOwnProperty(
-                                                          "isMetricUnits"
+                                                      content: convertTemperatureUnits(
+                                                          this.state.weatherData
+                                                              .main.temp_min,
+                                                          this.state.currentUnit
                                                       )
-                                                          ? !this.state
-                                                                .isMetricUnits
-                                                              ? `${convertTemperatureUnits(
-                                                                    this.state
-                                                                        .weatherData
-                                                                        .main
-                                                                        .temp_min
-                                                                )}&deg;F`
-                                                              : `${formatValue(
-                                                                    this.state
-                                                                        .weatherData
-                                                                        .main
-                                                                        .temp_min
-                                                                )}&deg;C`
-                                                          : `${formatValue(
-                                                                this.state
-                                                                    .weatherData
-                                                                    .main
-                                                                    .temp_min
-                                                            )}&deg;C`
                                                   },
                                                   {
                                                       tag: "div",
                                                       classList: ["temp-max"],
-                                                      content: this.state.hasOwnProperty(
-                                                          "isMetricUnits"
+                                                      content: convertTemperatureUnits(
+                                                          this.state.weatherData
+                                                              .main.temp_max,
+                                                          this.state.currentUnit
                                                       )
-                                                          ? !this.state
-                                                                .isMetricUnits
-                                                              ? `${convertTemperatureUnits(
-                                                                    this.state
-                                                                        .weatherData
-                                                                        .main
-                                                                        .temp_max
-                                                                )}&deg;F`
-                                                              : `${formatValue(
-                                                                    this.state
-                                                                        .weatherData
-                                                                        .main
-                                                                        .temp_max
-                                                                )}&deg;C`
-                                                          : `${formatValue(
-                                                                this.state
-                                                                    .weatherData
-                                                                    .main
-                                                                    .temp_max
-                                                            )}&deg;C`
                                                   }
                                               ]
                                           },
@@ -254,24 +198,11 @@ export default class CurrentWeather extends Component {
                                               classList: [
                                                   "forecast-item-tempcurrent"
                                               ],
-                                              content: this.state.hasOwnProperty(
-                                                  "isMetricUnits"
+                                              content: convertTemperatureUnits(
+                                                  this.state.weatherData.main
+                                                      .temp,
+                                                  this.state.currentUnit
                                               )
-                                                  ? !this.state.isMetricUnits
-                                                      ? `${convertTemperatureUnits(
-                                                            this.state
-                                                                .weatherData
-                                                                .main.temp
-                                                        )}&deg;`
-                                                      : `${formatValue(
-                                                            this.state
-                                                                .weatherData
-                                                                .main.temp
-                                                        )}&deg;`
-                                                  : `${formatValue(
-                                                        this.state.weatherData
-                                                            .main.temp
-                                                    )}&deg;`
                                           }
                                       ]
                                   }

@@ -3296,11 +3296,6 @@ iconv-lite@^0.4.4:
   dependencies:
     safer-buffer ">= 2.1.2 < 3"
 
-idb@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/idb/-/idb-4.0.0.tgz#0c79ab1655fb7d14eb8f4626d761f0847ab2f014"
-  integrity sha512-TWHSYcfqKet9ew50PFqdi2KB8gfdXO3NESh9be7eJqk9uC0rmGb6A/eiIN/UpGYkbjZ98psDujE5/oaeqkraCQ==
-
 ieee754@^1.1.4:
   version "1.1.12"
   resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.1.12.tgz#50bf24e5b9c8bb98af4964c941cdb0918da7b60b"

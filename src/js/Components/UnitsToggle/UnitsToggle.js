@@ -5,39 +5,39 @@ export default class UnitsToggle extends Component {
     constructor(host, props) {
         super(host, props);
         this.isMetricUnitsCheck;
-        AppState.watch("UNITSCHECK", this.updateMyself);
+        AppState.watch("CURRENTUNIT", this.updateMyself);
     }
+
     updateMyself(substate) {
         this.updateState(substate);
     }
 
     init() {
-        this.state = {};
+        const currentUnit = localStorage.getItem("currentUnit")
+            ? JSON.parse(localStorage.getItem("unit"))
+            : "C";
+        this.state = {
+            currentUnit: currentUnit
+        };
         this.updateMyself = this.updateMyself.bind(this);
         this.handleUnits = this.handleUnits.bind(this);
     }
 
-    handleUnits() {
-        if (this.state.hasOwnProperty("isMetricUnits")) {
-            this.isMetricUnitsCheck = this.state.isMetricUnits;
-        } else {
-            this.isMetricUnitsCheck = true;
-        }
-
-        console.log(this.isMetricUnitsCheck);
-
-        this.isMetricUnitsCheck = !this.isMetricUnitsCheck;
-
-        console.log(this.isMetricUnitsCheck);
-
-        AppState.update("UNITSCHECK", {
-            isMetricUnits: this.isMetricUnitsCheck
+    handleUnits(event) {
+        AppState.update("CURRENTUNIT", {
+            currentUnit: event.target.value
         });
     }
 
+    putUnitToLocalStorage() {
+        localStorage.setItem(
+            "currentUnit",
+            JSON.stringify(this.state.currentUnit)
+        );
+    }
+
     render() {
-        // console.log(this.state.isMetricUnits);
-        // console.log(this.isMetricUnitsCheck);
+        // console.log(this.state);
         return [
             {
                 tag: "select",
@@ -48,10 +48,9 @@ export default class UnitsToggle extends Component {
                         attributes: [
                             {
                                 name: "value",
-                                value: "Celsius"
+                                value: "C"
                             },
-                            this.state.hasOwnProperty("isMetricUnits") &&
-                            this.state.isMetricUnits === true
+                            this.state.currentUnit === "C"
                                 ? { name: "selected", value: "" }
                                 : {}
                         ],
@@ -62,10 +61,9 @@ export default class UnitsToggle extends Component {
                         attributes: [
                             {
                                 name: "value",
-                                value: "Farengheit"
+                                value: "F"
                             },
-                            this.state.hasOwnProperty("isMetricUnits") &&
-                            this.state.isMetricUnits === false
+                            this.state.currentUnit === "F"
                                 ? { name: "selected", value: "" }
                                 : {}
                         ],

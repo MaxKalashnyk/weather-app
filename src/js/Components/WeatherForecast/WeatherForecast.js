@@ -7,7 +7,7 @@ export default class WeatherForecast extends Component {
         super(host, props);
         AppState.watch("WEATHERFORECASTDATA", this.updateMyself);
         AppState.watch("WEATHERDATA", this.updateMyself);
-        // AppState.watch("UNITSCHECK", this.updateMyself);
+        AppState.watch("CURRENTUNIT", this.updateMyself);
     }
 
     updateMyself(substate) {
@@ -15,7 +15,12 @@ export default class WeatherForecast extends Component {
     }
 
     init() {
-        this.state = {};
+        const currentUnit = localStorage.getItem("currentUnit")
+            ? JSON.parse(localStorage.getItem("unit"))
+            : "C";
+        this.state = {
+            currentUnit: currentUnit
+        };
         this.updateMyself = this.updateMyself.bind(this);
     }
 
@@ -56,7 +61,10 @@ export default class WeatherForecast extends Component {
                         ? this.props.daysList.map(listItem => {
                               return {
                                   tag: WeatherForecastItem,
-                                  props: { ...listItem }
+                                  props: {
+                                      ...listItem,
+                                      currentUnit: this.state.currentUnit
+                                  }
                               };
                           })
                         : ""

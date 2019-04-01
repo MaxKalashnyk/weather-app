@@ -11,7 +11,6 @@ export default class WeatherForecastItem extends Component {
         super(host, props);
         AppState.watch("WEATHERFORECASTDATA", this.updateMyself);
         AppState.watch("WEATHERDATA", this.updateMyself);
-        AppState.watch("UNITSCHECK", this.updateMyself);
     }
 
     updateMyself(substate) {
@@ -40,12 +39,6 @@ export default class WeatherForecastItem extends Component {
         AppState.update("WEATHERDATA", {
             weatherData: finalObj
         });
-
-        if (this.state.hasOwnProperty("isMetricUnits")) {
-            AppState.update("UNITSCHECK", {
-                isMetricUnits: this.state.isMetricUnits
-            });
-        }
     }
 
     render() {
@@ -68,13 +61,10 @@ export default class WeatherForecastItem extends Component {
                     {
                         tag: "div",
                         classList: ["day-forecast-temp"],
-                        content: this.state.hasOwnProperty("isMetricUnits")
-                            ? !this.state.isMetricUnits
-                                ? `${convertTemperatureUnits(
-                                      this.props.main.temp
-                                  )}&deg;F`
-                                : `${formatValue(this.props.main.temp)}&deg;C`
-                            : `${formatValue(this.props.main.temp)}&deg;C`
+                        content: convertTemperatureUnits(
+                            this.props.main.temp,
+                            this.props.currentUnit
+                        )
                     },
                     {
                         tag: "div",
