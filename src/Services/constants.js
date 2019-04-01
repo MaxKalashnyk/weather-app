@@ -165,8 +165,8 @@ export const convertTemperatureUnits = (value, units) => {
     }
 
     return units === "C"
-        ? `${value} &deg;C`
-        : `${(value * 1.8 + 32).toFixed(0)} &deg;F`;
+        ? `${Math.round(value)} &deg;C`
+        : `${Math.round(value * 1.8 + 32)} &deg;F`;
 };
 
 export const convertWindUnits = (value, units) => {
@@ -175,8 +175,8 @@ export const convertWindUnits = (value, units) => {
     }
 
     return units === "C"
-        ? `${value} m/s`
-        : `${(value * coefficientImperial).toFixed(0)} mph`;
+        ? `${value.toFixed(1)} m/s`
+        : `${(value * coefficientImperial).toFixed(1)} mph`;
 };
 
 // export const convertDate = milliseconds => {

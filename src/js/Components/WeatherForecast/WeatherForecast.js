@@ -16,7 +16,7 @@ export default class WeatherForecast extends Component {
 
     init() {
         const currentUnit = localStorage.getItem("currentUnit")
-            ? JSON.parse(localStorage.getItem("unit"))
+            ? JSON.parse(localStorage.getItem("currentUnit"))
             : "C";
         this.state = {
             currentUnit: currentUnit

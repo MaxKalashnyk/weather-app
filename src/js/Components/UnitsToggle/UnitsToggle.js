@@ -14,7 +14,7 @@ export default class UnitsToggle extends Component {
 
     init() {
         const currentUnit = localStorage.getItem("currentUnit")
-            ? JSON.parse(localStorage.getItem("unit"))
+            ? JSON.parse(localStorage.getItem("currentUnit"))
             : "C";
         this.state = {
             currentUnit: currentUnit
@@ -24,9 +24,13 @@ export default class UnitsToggle extends Component {
     }
 
     handleUnits(event) {
+        console.log(event);
+
         AppState.update("CURRENTUNIT", {
             currentUnit: event.target.value
         });
+
+        this.putUnitToLocalStorage();
     }
 
     putUnitToLocalStorage() {
