@@ -88,13 +88,17 @@ export default class Searchbar extends Component {
         // console.log(array);
 
         if (
-            array.filter(item => item.placeId === this.props.placeId).length ===
-            0
+            array.filter(
+                item =>
+                    item.placeId === this.props.placeId ||
+                    (this.state.weatherData && this.state.weatherData.placeId)
+            ).length === 0
         ) {
             const placeObject = {
-                place: this.props.city,
-                formattedPlace: this.props.cityFormatted,
-                placeId: this.props.placeId
+                place: this.props.city || this.state.weatherData.city,
+                formattedPlace:
+                    this.props.cityFormatted || this.state.weatherData.placeId,
+                placeId: this.props.placeId || this.state.weatherData.placeId
             };
             array.push(placeObject);
             if (isFavourite) {
@@ -131,7 +135,9 @@ export default class Searchbar extends Component {
         if (data && data.length > 0) {
             this.props.weatherData = {
                 ...data[0],
-                placeId: this.props.placeId
+                placeId: this.props.placeId,
+                city: this.props.city,
+                cityFormatted: this.props.cityFormatted
             };
             this.props.weatherForecastData = data[1];
             AppState.update("WEATHERDATA", {
