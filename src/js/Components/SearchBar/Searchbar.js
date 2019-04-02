@@ -129,7 +129,10 @@ export default class Searchbar extends Component {
 
     handleForecastData(data) {
         if (data && data.length > 0) {
-            this.props.weatherData = data[0];
+            this.props.weatherData = {
+                ...data[0],
+                placeId: this.props.placeId
+            };
             this.props.weatherForecastData = data[1];
             AppState.update("WEATHERDATA", {
                 weatherData: this.props.weatherData
