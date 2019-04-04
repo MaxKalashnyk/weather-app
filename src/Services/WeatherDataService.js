@@ -11,7 +11,7 @@ class WeatherDataService {
     }
 
     // getData(url) {
-    //     return fetch(url).then(res => {
+    //     return fetch(url).then(res => {x
     //         if (res.ok) {
     //             return res.json();
     //         }

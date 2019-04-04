@@ -2,14 +2,15 @@ import Component from "../../framework/Component";
 import AppState from "../../../Services/AppState";
 import { currentWeaterURLString } from "../../../Services/constants";
 import { weatherForecastURLString } from "../../../Services/constants";
+import { putItemToLocalStorage } from "../../../Services/constants";
 import WeatherDataService from "../../../Services/WeatherDataService";
 
 export default class FavouriteLocations extends Component {
     constructor(host, props) {
         super(host, props);
-        AppState.watch("FAVOURITEPLACES", this.updateMyself);
-        AppState.watch("FAVOURITEPLACECHECK", this.updateMyself);
-        AppState.watch("WEATHERDATA", this.updateMyself);
+        AppState.watch("WEATHERDATA", this.weatherCurrentUpdate);
+        AppState.watch("ISFAVOURITEPLACE", this.updateMyself);
+        AppState.watch("FAVOURITEPLACEDATA", this.handleFavouritePlace);
     }
     updateMyself(substate) {
         this.updateState(substate);
@@ -29,30 +30,70 @@ export default class FavouriteLocations extends Component {
             "clearFavouritePlacesList",
             "getWeatherByPlaceItem",
             "handleForecastData",
-            "getWeather"
+            "getWeatherData",
+            "handleFavouritePlace",
+            "weatherCurrentUpdate"
         ].forEach(
             methodName => (this[methodName] = this[methodName].bind(this))
         );
     }
 
-    clearFavouritePlacesList() {
-        this.state = {
-            storageFavouritePlaces: []
-        };
-        AppState.update("FAVOURITEPLACES", {
-            storageFavouritePlaces: []
+    weatherCurrentUpdate(weatherCurrent) {
+        const matchedItem = this.state.storageFavouritePlaces.find(item => {
+            return item.placeId === weatherCurrent.weatherData.placeId;
         });
-        AppState.update("FAVOURITEPLACECHECK", {
-            favouritePlaceCheck: false
+
+        let isFav = matchedItem ? true : false;
+
+        if (weatherCurrent.weatherData.placeId) {
+            AppState.update("ISFAVOURITEPLACE", { isFavourite: isFav });
+        }
+    }
+
+    handleFavouritePlace(place) {
+        const matchedItem = this.state.storageFavouritePlaces.find(item => {
+            return item.placeId === place.placeId;
         });
-        this.putItemToLocalStorage(
+
+        if (matchedItem) {
+            this.updateState({
+                storageFavouritePlaces: (this.state.storageFavouritePlaces = this.state.storageFavouritePlaces.filter(
+                    item => item.placeId !== place.placeId
+                ))
+            });
+
+            AppState.update("ISFAVOURITEPLACE", { isFavourite: false });
+        } else {
+            this.updateState({
+                storageFavouritePlaces: [
+                    ...this.state.storageFavouritePlaces,
+                    {
+                        place: place.place,
+                        formattedPlace: place.formattedPlace,
+                        placeId: place.placeId
+                    }
+                ]
+            });
+
+            AppState.update("ISFAVOURITEPLACE", { isFavourite: true });
+        }
+
+        putItemToLocalStorage(
             "favouritePlaces",
             this.state.storageFavouritePlaces
         );
+
     }
 
-    putItemToLocalStorage(key, list) {
-        localStorage.setItem(key, JSON.stringify(list));
+    clearFavouritePlacesList() {
+        this.updateState({
+            storageFavouritePlaces: []
+        });
+        AppState.update("ISFAVOURITEPLACE", { isFavourite: false });
+        putItemToLocalStorage(
+            "favouritePlaces",
+            this.state.storageFavouritePlaces
+        );
     }
 
     getWeatherByPlaceItem({ target }) {
@@ -60,13 +101,11 @@ export default class FavouriteLocations extends Component {
             this.props.itemDataName = target.dataset.name;
             this.props.placeId = target.dataset.placeid;
 
-            // console.log(this.state);
-
             if (!this.state.weatherData) {
-                this.getWeather(this.props.itemDataName);
+                this.getWeatherData(this.props.itemDataName);
             } else {
                 if (this.state.weatherData.placeId !== this.props.placeId) {
-                    this.getWeather(this.props.itemDataName);
+                    this.getWeatherData(this.props.itemDataName);
                 } else {
                     return;
                 }
@@ -74,7 +113,7 @@ export default class FavouriteLocations extends Component {
         }
     }
 
-    getWeather(cityName) {
+    getWeatherData(cityName) {
         const urlsArray = [
             WeatherDataService.getWeatherURLS(currentWeaterURLString, cityName),
             WeatherDataService.getWeatherURLS(
@@ -147,11 +186,15 @@ export default class FavouriteLocations extends Component {
                                             classList: [
                                                 "user-activity-list-item"
                                             ],
-                                            content: placeItem.formattedPlace,
+                                            content:
+                                                placeItem.formattedPlace ||
+                                                placeItem.name,
                                             attributes: [
                                                 {
                                                     name: "data-name",
-                                                    value: placeItem.place
+                                                    value:
+                                                        placeItem.place ||
+                                                        placeItem.name
                                                 },
                                                 {
                                                     name: "data-placeid",

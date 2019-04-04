@@ -1,8 +1,6 @@
 import Component from "../../framework/Component";
 import AppState from "../../../Services/AppState";
-// import { formatValue } from "../../../Services/constants";
 import { checkProperty } from "../../../Services/constants";
-// import { getCurrentDate } from "../../../Services/constants";
 import { getcurrentDateString } from "../../../Services/constants";
 import { getDayFromDateString } from "../../../Services/constants";
 import { convertPressure } from "../../../Services/constants";
@@ -16,7 +14,6 @@ export default class CurrentWeather extends Component {
         super(host, props);
         AppState.watch("WEATHERDATA", this.updateMyself);
         AppState.watch("CURRENTUNIT", this.updateMyself);
-        // console.log(this.state);
     }
 
     updateMyself(substate) {

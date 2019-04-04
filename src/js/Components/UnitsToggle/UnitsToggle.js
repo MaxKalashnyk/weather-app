@@ -24,7 +24,7 @@ export default class UnitsToggle extends Component {
     }
 
     handleUnits(event) {
-        console.log(event);
+        // console.log(event);
 
         AppState.update("CURRENTUNIT", {
             currentUnit: event.target.value

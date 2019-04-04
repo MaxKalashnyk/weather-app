@@ -10,6 +10,10 @@ body {
     padding: 0 15px;
 }
 
+.main {
+    padding-bottom: 2em;
+}
+
 .app-container {
     max-width: 800px;
     margin: 0 auto;
@@ -61,8 +65,11 @@ body {
     margin-right: 5px;
     cursor: pointer;
     @include transition(all);
-    &:hover {
+    &:not(:disabled):hover {
         background-color: rgba(255, 255, 255, 0.3);
+    }
+    &:disabled {
+        cursor: default;
     }
 }
 
@@ -279,7 +286,7 @@ body {
 /* user activity items */
 
 .user-activity-wrap {
-    height: 200px;
+    min-height: 200px;
     margin-left: -20px;
 }
 

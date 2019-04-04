@@ -179,6 +179,10 @@ export const convertWindUnits = (value, units) => {
         : `${(value * coefficientImperial).toFixed(1)} mph`;
 };
 
+export const putItemToLocalStorage = (key, list) => {
+    localStorage.setItem(key, JSON.stringify(list));
+}
+
 // export const debounce = (func, wait, immediate) => {
 //     var timeout;
 //     return function() {

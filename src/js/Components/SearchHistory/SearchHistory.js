@@ -1,8 +1,9 @@
 import Component from "../../framework/Component";
 import AppState from "../../../Services/AppState";
+import WeatherDataService from "../../../Services/WeatherDataService";
 import { currentWeaterURLString } from "../../../Services/constants";
 import { weatherForecastURLString } from "../../../Services/constants";
-import WeatherDataService from "../../../Services/WeatherDataService";
+import { putItemToLocalStorage } from "../../../Services/constants";
 
 export default class SearchHistory extends Component {
     constructor(host, props) {
@@ -30,28 +31,23 @@ export default class SearchHistory extends Component {
             "clearSearchHistoryList",
             "getWeatherByPlaceItem",
             "handleForecastData",
-            "getWeather"
+            "getWeatherData"
         ].forEach(
             methodName => (this[methodName] = this[methodName].bind(this))
         );
     }
 
     clearSearchHistoryList() {
-        this.state = {
-            storageRecentlyViewedList: []
-        };
+        this.state.storageRecentlyViewedList = [];
+
         AppState.update("RECENTLYVIEWEDPLACES", {
             storageRecentlyViewedList: []
         });
 
-        this.putItemToLocalStorage(
+        putItemToLocalStorage(
             "recentlyViewedPlaces",
             this.state.storageRecentlyViewedList
         );
-    }
-
-    putItemToLocalStorage(key, list) {
-        localStorage.setItem(key, JSON.stringify(list));
     }
 
     getWeatherByPlaceItem({ target }) {
@@ -59,13 +55,11 @@ export default class SearchHistory extends Component {
             this.props.itemDataName = target.dataset.name;
             this.props.placeId = target.dataset.placeid;
 
-            // console.log(this.state);
-
             if (!this.state.weatherData) {
-                this.getWeather(this.props.itemDataName);
+                this.getWeatherData(this.props.itemDataName);
             } else {
                 if (this.state.weatherData.placeId !== this.props.placeId) {
-                    this.getWeather(this.props.itemDataName);
+                    this.getWeatherData(this.props.itemDataName);
                 } else {
                     return;
                 }
@@ -73,7 +67,7 @@ export default class SearchHistory extends Component {
         }
     }
 
-    getWeather(cityName) {
+    getWeatherData(cityName) {
         const urlsArray = [
             WeatherDataService.getWeatherURLS(currentWeaterURLString, cityName),
             WeatherDataService.getWeatherURLS(
@@ -98,12 +92,11 @@ export default class SearchHistory extends Component {
             AppState.update("WEATHERFORECASTDATA", {
                 weatherForecastData: this.props.weatherForecastData
             });
+            console.log(this.state);
         }
     }
 
     render() {
-        // console.log(this.state);
-
         return [
             {
                 tag: "div",
@@ -147,11 +140,15 @@ export default class SearchHistory extends Component {
                                             classList: [
                                                 "user-activity-list-item"
                                             ],
-                                            content: placeItem.formattedPlace,
+                                            content:
+                                                placeItem.formattedPlace ||
+                                                placeItem.name,
                                             attributes: [
                                                 {
                                                     name: "data-name",
-                                                    value: placeItem.place
+                                                    value:
+                                                        placeItem.place ||
+                                                        placeItem.name
                                                 },
                                                 {
                                                     name: "data-placeid",

@@ -2,16 +2,15 @@ import Component from "../../framework/Component";
 import { initAutocomplete } from "../../../Services/constants";
 import { currentWeaterURLString } from "../../../Services/constants";
 import { weatherForecastURLString } from "../../../Services/constants";
+import { putItemToLocalStorage } from "../../../Services/constants";
 import AppState from "../../../Services/AppState";
 import WeatherDataService from "../../../Services/WeatherDataService";
 import UnitsToggle from "../UnitsToggle/UnitsToggle";
+import FavouriteToggle from "../FavouriteToggle/FavouriteToggle";
 
 export default class Searchbar extends Component {
     constructor(host, props) {
         super(host, props);
-        this.urlsArray = [];
-        this.isFavouriteCheck = false;
-        AppState.watch("FAVOURITEPLACECHECK", this.updateMyself);
         AppState.watch("FAVOURITEPLACES", this.updateMyself);
     }
 
@@ -21,13 +20,9 @@ export default class Searchbar extends Component {
         )
             ? JSON.parse(localStorage.getItem("recentlyViewedPlaces"))
             : [];
-        const storageFavouritePlaces = localStorage.getItem("favouritePlaces")
-            ? JSON.parse(localStorage.getItem("favouritePlaces"))
-            : [];
 
         this.state = {
-            storageRecentlyViewedList: storageRecentlyViewedList,
-            storageFavouritePlaces: storageFavouritePlaces
+            storageRecentlyViewedList: storageRecentlyViewedList
         };
 
         this.input = document.createElement("input");
@@ -41,7 +36,6 @@ export default class Searchbar extends Component {
             "updateMyself",
             "handleSubmit",
             "handleForecastData",
-            "handleFavouritePlace",
             "checkItemAndPushToArray"
         ].forEach(
             methodName => (this[methodName] = this[methodName].bind(this))
@@ -57,36 +51,29 @@ export default class Searchbar extends Component {
     }
 
     handleSubmit(place) {
-        // console.log(place);
-        this.isFavouriteCheck = false;
-        AppState.update("FAVOURITEPLACECHECK", {
-            favouritePlaceCheck: this.isFavouriteCheck
-        });
-        this.props.city = place.name;
-        this.props.cityFormatted = place.formatted_address;
+        this.props.place = place.name;
+        this.props.formattedPlace = place.formatted_address;
         this.props.placeId = place.id;
 
         this.checkItemAndPushToArray(this.state.storageRecentlyViewedList);
 
-        this.checkFavouritePlace();
-
-        this.urlsArray = [
+        const urlsArray = [
             WeatherDataService.getWeatherURLS(
                 currentWeaterURLString,
-                this.props.city
+                this.props.place
             ),
             WeatherDataService.getWeatherURLS(
                 weatherForecastURLString,
-                this.props.city
+                this.props.place
             )
         ];
 
-        WeatherDataService.getWeather(this.urlsArray, this.handleForecastData);
+        WeatherDataService.getWeather(urlsArray, this.handleForecastData);
+
+        this.input.value = "";
     }
 
-    checkItemAndPushToArray(array, isFavourite = false) {
-        // console.log(array);
-
+    checkItemAndPushToArray(array) {
         if (
             array.filter(
                 item =>
@@ -95,39 +82,13 @@ export default class Searchbar extends Component {
             ).length === 0
         ) {
             const placeObject = {
-                place: this.props.city || this.state.weatherData.city,
+                place: this.props.place || this.state.weatherData.place,
                 formattedPlace:
-                    this.props.cityFormatted || this.state.weatherData.placeId,
+                    this.props.formattedPlace ||
+                    this.state.weatherData.formattedPlace,
                 placeId: this.props.placeId || this.state.weatherData.placeId
             };
             array.push(placeObject);
-            if (isFavourite) {
-                this.isFavouriteCheck = true;
-            }
-        } else {
-            if (isFavourite) {
-                this.isFavouriteCheck = false;
-                this.state.storageFavouritePlaces = this.state.storageFavouritePlaces.filter(
-                    item => {
-                        return item.placeId !== this.props.placeId;
-                    }
-                );
-            }
-        }
-    }
-
-    checkFavouritePlace() {
-        const matchedItem = this.state.storageFavouritePlaces.find(item => {
-            return item.placeId === this.props.placeId;
-        });
-
-        if (matchedItem !== undefined) {
-            this.isFavouriteCheck = true;
-            AppState.update("FAVOURITEPLACECHECK", {
-                favouritePlaceCheck: this.isFavouriteCheck
-            });
-        } else {
-            this.isFavouriteCheck = false;
         }
     }
 
@@ -136,8 +97,8 @@ export default class Searchbar extends Component {
             this.props.weatherData = {
                 ...data[0],
                 placeId: this.props.placeId,
-                city: this.props.city,
-                cityFormatted: this.props.cityFormatted
+                place: this.props.place,
+                formattedPlace: this.props.formattedPlace
             };
             this.props.weatherForecastData = data[1];
             AppState.update("WEATHERDATA", {
@@ -149,44 +110,14 @@ export default class Searchbar extends Component {
             AppState.update("RECENTLYVIEWEDPLACES", {
                 storageRecentlyViewedList: this.state.storageRecentlyViewedList
             });
-            this.putItemToLocalStorage(
+            putItemToLocalStorage(
                 "recentlyViewedPlaces",
                 this.state.storageRecentlyViewedList
             );
         }
     }
 
-    handleFavouritePlace() {
-        this.checkItemAndPushToArray(this.state.storageFavouritePlaces, true);
-        // console.log(this.favouritePlacesArray);
-        AppState.update("FAVOURITEPLACECHECK", {
-            favouritePlaceCheck: this.isFavouriteCheck
-        });
-        AppState.update("FAVOURITEPLACES", {
-            storageFavouritePlaces: this.state.storageFavouritePlaces
-        });
-
-        this.putItemToLocalStorage(
-            "favouritePlaces",
-            this.state.storageFavouritePlaces
-        );
-    }
-
-    putItemToLocalStorage(key, list) {
-        localStorage.setItem(key, JSON.stringify(list));
-    }
-
     render() {
-        let activeButtonClass;
-
-        if (this.state.hasOwnProperty("favouritePlaceCheck")) {
-            if (this.state.favouritePlaceCheck) {
-                activeButtonClass = "add-to-favourite-active";
-            } else {
-                activeButtonClass = "button";
-            }
-        }
-
         return [
             {
                 tag: "div",
@@ -194,16 +125,7 @@ export default class Searchbar extends Component {
                 classList: ["search-block"],
                 children: [
                     {
-                        tag: "button",
-                        classList: [
-                            "add-to-favourite",
-                            `${
-                                activeButtonClass ? activeButtonClass : "button"
-                            }`
-                        ],
-                        eventHandlers: {
-                            click: this.handleFavouritePlace
-                        }
+                        tag: FavouriteToggle
                     },
                     this.input,
                     {
