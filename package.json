@@ -23,6 +23,7 @@
     },
     "dependencies": {
         "normalize.css": "^8.0.1",
+        "perfect-scrollbar": "^1.4.0",
         "src": "^1.1.2",
         "yarn": "^1.13.0"
     },

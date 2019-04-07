@@ -2,11 +2,12 @@
 @import "fonts";
 @import "custom-reset";
 @import "./_mixins/custom-mixins";
+@import "perfect-scrollbar.css";
 
 /* custom styles */
 
 body {
-    background-color: #c7ecee;
+    background-color: $backgroundColor;
     padding: 0 15px;
 }
 
@@ -33,22 +34,23 @@ body {
 
 .main-search-input {
     flex-grow: 1;
+    height: $elementsHeight;
     padding-left: 10px;
     padding-right: 50px;
     margin-right: 5px;
     border: none;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: $backgroundItem;
     background-image: url("#{$imagePath}/magnifying-glass.svg");
     background-position: 98% center;
     background-repeat: no-repeat;
     background-size: 25px;
-    border-radius: 5px;
+    color: $text;
     @include transition(background-color);
     &:hover {
-        background-color: rgba(255, 255, 255, 0.3);
+        background-color: $backgroundItemHover;
     }
     &:focus {
-        background-color: rgba(255, 255, 255, 0.3);
+        background-color: $backgroundItemHover;
     }
 }
 
@@ -56,17 +58,17 @@ body {
     background-image: url("#{$imagePath}/star.svg");
     background-position: center;
     background-repeat: no-repeat;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: $backgroundItem;
     background-size: 35px;
     border: none;
-    border-radius: 5px;
+    border-radius: $borderRadius;
     width: 50px;
-    height: 50px;
+    height: $elementsHeight;
     margin-right: 5px;
     cursor: pointer;
     @include transition(all);
     &:not(:disabled):hover {
-        background-color: rgba(255, 255, 255, 0.3);
+        background-color: $backgroundItemHover;
     }
     &:disabled {
         cursor: default;
@@ -78,14 +80,18 @@ body {
 }
 
 .temperature-units {
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.1);
+    height: $elementsHeight;
+    background-color: $backgroundItem;
     border: none;
-    border-radius: 5px;
+    border-radius: $borderRadius;
     padding: 0 10px;
+    color: $text;
     @include transition(all);
     &:hover {
-        background-color: rgba(255, 255, 255, 0.3);
+        background-color: $backgroundItemHover;
+    }
+    option {
+        color: $backgroundColor;
     }
 }
 
@@ -108,9 +114,9 @@ body {
 }
 
 .forecast-current {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: $backgroundItem;
     border: 1px solid transparent;
-    border-radius: 5px;
+    border-radius: $borderRadius;
     padding: 20px;
     margin-bottom: 20px;
 }
@@ -214,13 +220,13 @@ body {
     text-align: center;
     display: flex;
     flex-direction: column;
-    border-radius: 5px;
+    border-radius: $borderRadius;
     margin-left: 10px;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: $backgroundItem;
     cursor: pointer;
     @include transition(background-color);
     &:hover {
-        background-color: rgba(255, 255, 255, 0.3);
+        background-color: $backgroundItemHover;
     }
 }
 
@@ -294,11 +300,11 @@ body {
     width: 50%;
     margin-left: 20px;
     padding: 20px;
-    border-radius: 5px;
+    border-radius: $borderRadius;
     &:last-child {
         margin-right: 0;
     }
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: $backgroundItem;
 }
 
 // .user-activity-item {
@@ -330,26 +336,34 @@ body {
     background-image: url("#{$imagePath}/delete.svg");
     background-position: center;
     background-repeat: no-repeat;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: $backgroundItem;
     background-size: 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: $borderRadius;
     @include transition(background-color);
     &:hover {
-        background-color: rgba(255, 255, 255, 0.3);
+        background-color: $backgroundItemHover;
     }
+}
+
+.user-activity-list {
+    height: 180px;
+    position: relative;
+    padding-right: 15px;
 }
 
 .user-activity-list-item {
     margin-bottom: 5px;
-    border-bottom: 1px solid rgba(66, 134, 244, 0.1);
+    border-bottom: 1px solid $backgroundItem;
+    padding: 0 5px;
     cursor: pointer;
-    @include transition(background-color);
+    @include transition(all);
     &:last-child {
         margin-bottom: 0;
     }
     &:hover {
-        background-color: rgba(255, 255, 255, 0.1);
+        background-color: $backgroundItem;
+        border-radius: $borderRadius;
     }
 }
 

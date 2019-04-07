@@ -3,9 +3,7 @@ export default class Component {
         this.host = host;
         this.props = props;
         this.init();
-        this.handleSmth = this.handleSmth.bind(this);
-        this._render();
-        this.handleSmth();
+        this._render().then(this.handleSmth);
     }
 
     updateState(nextState) {
@@ -21,19 +19,23 @@ export default class Component {
     }
 
     _render() {
-        this.host.innerHTML = "";
+        return new Promise((resolve, reject) => {
+            this.host.innerHTML = "";
 
-        let content = this.render();
+            let content = this.render();
 
-        if (!Array.isArray(content)) {
-            content = [content];
-        }
+            if (!Array.isArray(content)) {
+                content = [content];
+            }
 
-        content
-            .map(item => this._vDomPrototypeElementToHtmlElement(item)) // [string|HTMLElement] => [HTMLElement]
-            .forEach(htmlElement => {
-                this.host.appendChild(htmlElement);
-            });
+            content
+                .map(item => this._vDomPrototypeElementToHtmlElement(item)) // [string|HTMLElement] => [HTMLElement]
+                .forEach(htmlElement => {
+                    this.host.appendChild(htmlElement);
+                });
+
+            resolve(true);
+        });
     }
     /* @returns {string|[string|HTMLElement|Component]} */
     render() {

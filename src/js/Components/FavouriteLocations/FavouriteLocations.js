@@ -3,7 +3,9 @@ import AppState from "../../../Services/AppState";
 import { currentWeaterURLString } from "../../../Services/constants";
 import { weatherForecastURLString } from "../../../Services/constants";
 import { putItemToLocalStorage } from "../../../Services/constants";
+import { scrollableBlockWrapClassFavourite } from "../../../Services/constants";
 import WeatherDataService from "../../../Services/WeatherDataService";
+import PerfectScrollbar from "perfect-scrollbar";
 
 export default class FavouriteLocations extends Component {
     constructor(host, props) {
@@ -14,6 +16,14 @@ export default class FavouriteLocations extends Component {
     }
     updateMyself(substate) {
         this.updateState(substate);
+        this.handleSmth();
+    }
+
+    handleSmth() {
+        const scrollableWrap = document.querySelector(
+            `.${scrollableBlockWrapClassFavourite}`
+        );
+        new PerfectScrollbar(scrollableWrap);
     }
 
     init() {
@@ -82,7 +92,6 @@ export default class FavouriteLocations extends Component {
             "favouritePlaces",
             this.state.storageFavouritePlaces
         );
-
     }
 
     clearFavouritePlacesList() {
@@ -143,6 +152,7 @@ export default class FavouriteLocations extends Component {
 
     render() {
         // console.log(this.state);
+
         return [
             {
                 tag: "div",
@@ -178,7 +188,10 @@ export default class FavouriteLocations extends Component {
                         children: [
                             {
                                 tag: "ul",
-                                classList: ["user-activity-list"],
+                                classList: [
+                                    "user-activity-list",
+                                    "user-activity-list-favourite"
+                                ],
                                 children: this.state.storageFavouritePlaces.map(
                                     placeItem => {
                                         return {

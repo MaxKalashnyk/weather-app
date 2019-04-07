@@ -36,7 +36,8 @@ export default class Searchbar extends Component {
             "updateMyself",
             "handleSubmit",
             "handleForecastData",
-            "checkItemAndPushToArray"
+            "checkItemAndPushToArray",
+            "handleSmth"
         ].forEach(
             methodName => (this[methodName] = this[methodName].bind(this))
         );

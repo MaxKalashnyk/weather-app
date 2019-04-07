@@ -4,6 +4,8 @@ import WeatherDataService from "../../../Services/WeatherDataService";
 import { currentWeaterURLString } from "../../../Services/constants";
 import { weatherForecastURLString } from "../../../Services/constants";
 import { putItemToLocalStorage } from "../../../Services/constants";
+import { scrollableBlockWrapClassHistory } from "../../../Services/constants";
+import PerfectScrollbar from "perfect-scrollbar";
 
 export default class SearchHistory extends Component {
     constructor(host, props) {
@@ -13,6 +15,14 @@ export default class SearchHistory extends Component {
     }
     updateMyself(substate) {
         this.updateState(substate);
+        this.handleSmth();
+    }
+
+    handleSmth() {
+        const scrollableWrap = document.querySelector(
+            `.${scrollableBlockWrapClassHistory}`
+        );
+        new PerfectScrollbar(scrollableWrap);
     }
 
     init() {
@@ -132,7 +142,10 @@ export default class SearchHistory extends Component {
                         children: [
                             {
                                 tag: "ul",
-                                classList: ["user-activity-list"],
+                                classList: [
+                                    "user-activity-list",
+                                    "user-activity-list-history"
+                                ],
                                 children: this.state.storageRecentlyViewedList.map(
                                     placeItem => {
                                         return {

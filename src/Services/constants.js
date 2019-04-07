@@ -181,7 +181,10 @@ export const convertWindUnits = (value, units) => {
 
 export const putItemToLocalStorage = (key, list) => {
     localStorage.setItem(key, JSON.stringify(list));
-}
+};
+
+export const scrollableBlockWrapClassFavourite = "user-activity-list-favourite";
+export const scrollableBlockWrapClassHistory = "user-activity-list-history";
 
 // export const debounce = (func, wait, immediate) => {
 //     var timeout;
