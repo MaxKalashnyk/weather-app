@@ -6,6 +6,12 @@
 
 /* custom styles */
 
+html {
+    @include mediaQuery(400) {
+        font-size: 12px;
+    }
+}
+
 body {
     background-color: $backgroundColor;
     padding: 0 15px;
@@ -24,7 +30,7 @@ body {
     text-align: center;
     margin-bottom: 30px;
     margin-top: 20px;
-    font-size: 42px;
+    font-size: 3em;
 }
 
 .search-block {
@@ -39,6 +45,7 @@ body {
     padding-right: 50px;
     margin-right: 5px;
     border: none;
+    border-radius: $borderRadius;
     background-color: $backgroundItem;
     background-image: url("#{$imagePath}/magnifying-glass.svg");
     background-position: 98% center;
@@ -51,6 +58,9 @@ body {
     }
     &:focus {
         background-color: $backgroundItemHover;
+    }
+    @include mediaQuery(400) {
+        width: 100%;
     }
 }
 
@@ -107,10 +117,39 @@ body {
 .forecast-details {
     display: flex;
     justify-content: space-between;
+    @include mediaQuery(600) {
+        flex-wrap: wrap;
+    }
+    @include mediaQuery(400) {
+        flex-direction: column;
+    }
+}
+
+.forecast-item:first-child {
+    @include mediaQuery(600) {
+        width: 50%;
+    }
+    @include mediaQuery(400) {
+        width: 100%;
+        margin-bottom: 20px;
+    }
 }
 
 .forecast-item:nth-child(2) {
     text-align: center;
+    @include mediaQuery(600) {
+        order: 3;
+        margin: 0 auto;
+    }
+    @include mediaQuery(400) {
+        text-align: left;
+        margin: 0 0 20px;
+    }
+}
+
+.forecast-item:last-child {
+    @include mediaQuery(600) {
+    }
 }
 
 .forecast-current {
@@ -157,12 +196,18 @@ body {
 .forecast-item-temps {
     display: flex;
     justify-content: space-between;
+    @include mediaQuery(600) {
+        justify-content: flex-start;
+    }
 }
 
 .forecast-item-tempcurrent {
     font-size: 72px;
     font-weight: 600;
     text-align: center;
+    @include mediaQuery(600) {
+        text-align: left;
+    }
 }
 
 .weather-icon-current {
@@ -172,6 +217,9 @@ body {
     background-repeat: no-repeat;
     background-size: 100px;
     margin: 0 auto;
+    @include mediaQuery(600) {
+        margin: 0;
+    }
 }
 
 .weather-icon-description {
@@ -210,6 +258,11 @@ body {
 .forecast-nearest-days {
     margin-bottom: 20px;
     margin-left: -10px;
+    @include mediaQuery(600) {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        margin-bottom: 0;
+    }
 }
 
 .forecast-nearest-days > div {
@@ -227,6 +280,11 @@ body {
     @include transition(background-color);
     &:hover {
         background-color: $backgroundItemHover;
+    }
+    @include mediaQuery(600) {
+        width: calc(33.33% - 10px);
+        margin-bottom: 20px;
+        flex-grow: 0;
     }
 }
 
@@ -294,6 +352,10 @@ body {
 .user-activity-wrap {
     min-height: 200px;
     margin-left: -20px;
+    @include mediaQuery(768) {
+        margin-left: 0;
+        flex-direction: column;
+    }
 }
 
 .user-activity-wrap > div {
@@ -301,10 +363,20 @@ body {
     margin-left: 20px;
     padding: 20px;
     border-radius: $borderRadius;
+    background-color: $backgroundItem;
+    &:first-child {
+        @include mediaQuery(768) {
+            margin-bottom: 20px;
+        }
+    }
     &:last-child {
         margin-right: 0;
     }
-    background-color: $backgroundItem;
+
+    @include mediaQuery(768) {
+        width: 100%;
+        margin-left: 0;
+    }
 }
 
 // .user-activity-item {

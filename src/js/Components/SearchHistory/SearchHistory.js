@@ -1,8 +1,6 @@
 import Component from "../../framework/Component";
 import AppState from "../../../Services/AppState";
 import WeatherDataService from "../../../Services/WeatherDataService";
-import { currentWeaterURLString } from "../../../Services/constants";
-import { weatherForecastURLString } from "../../../Services/constants";
 import { putItemToLocalStorage } from "../../../Services/constants";
 import { scrollableBlockWrapClassHistory } from "../../../Services/constants";
 import PerfectScrollbar from "perfect-scrollbar";
@@ -10,12 +8,8 @@ import PerfectScrollbar from "perfect-scrollbar";
 export default class SearchHistory extends Component {
     constructor(host, props) {
         super(host, props);
-        AppState.watch("RECENTLYVIEWEDPLACES", this.updateMyself);
-        AppState.watch("WEATHERDATA", this.updateMyself);
-    }
-    updateMyself(substate) {
-        this.updateState(substate);
-        this.handleSmth();
+        AppState.watch("RECENTLYVIEWEDPLACES", this.updateSearchHistoryList);
+        AppState.watch("WEATHERDATA", this.updateWeatherData);
     }
 
     handleSmth() {
@@ -37,20 +31,51 @@ export default class SearchHistory extends Component {
         };
 
         [
-            "updateMyself",
+            "updateWeatherData",
             "clearSearchHistoryList",
             "getWeatherByPlaceItem",
             "handleForecastData",
-            "getWeatherData"
+            "updateSearchHistoryList"
         ].forEach(
             methodName => (this[methodName] = this[methodName].bind(this))
         );
     }
 
-    clearSearchHistoryList() {
-        this.state.storageRecentlyViewedList = [];
+    updateSearchHistoryList(historyItem) {
+        const matchedItem = this.state.storageRecentlyViewedList.find(item => {
+            return item.placeId === historyItem.placeId;
+        });
 
-        AppState.update("RECENTLYVIEWEDPLACES", {
+        if (matchedItem) {
+            this.updateState({
+                storageRecentlyViewedList: (this.state.storageRecentlyViewedList = this.state.storageRecentlyViewedList.filter(
+                    item => item.placeId !== historyItem.placeId
+                ))
+            });
+        } else {
+            this.updateState({
+                storageRecentlyViewedList: [
+                    ...this.state.storageRecentlyViewedList,
+                    historyItem
+                ]
+            });
+        }
+
+        putItemToLocalStorage(
+            "recentlyViewedPlaces",
+            this.state.storageRecentlyViewedList
+        );
+
+        this.handleSmth();
+    }
+
+    updateWeatherData(substate) {
+        this.updateState(substate);
+        this.handleSmth();
+    }
+
+    clearSearchHistoryList() {
+        this.updateState({
             storageRecentlyViewedList: []
         });
 
@@ -61,32 +86,26 @@ export default class SearchHistory extends Component {
     }
 
     getWeatherByPlaceItem({ target }) {
-        if (event.target.classList.contains("user-activity-list-item")) {
+        if (target.matches(".user-activity-list-item")) {
             this.props.itemDataName = target.dataset.name;
             this.props.placeId = target.dataset.placeid;
 
             if (!this.state.weatherData) {
-                this.getWeatherData(this.props.itemDataName);
+                WeatherDataService.getWeatherData(
+                    this.props.itemDataName,
+                    this.handleForecastData
+                );
             } else {
                 if (this.state.weatherData.placeId !== this.props.placeId) {
-                    this.getWeatherData(this.props.itemDataName);
+                    WeatherDataService.getWeatherData(
+                        this.props.itemDataName,
+                        this.handleForecastData
+                    );
                 } else {
                     return;
                 }
             }
         }
-    }
-
-    getWeatherData(cityName) {
-        const urlsArray = [
-            WeatherDataService.getWeatherURLS(currentWeaterURLString, cityName),
-            WeatherDataService.getWeatherURLS(
-                weatherForecastURLString,
-                cityName
-            )
-        ];
-
-        WeatherDataService.getWeather(urlsArray, this.handleForecastData);
     }
 
     handleForecastData(data) {
@@ -102,7 +121,6 @@ export default class SearchHistory extends Component {
             AppState.update("WEATHERFORECASTDATA", {
                 weatherForecastData: this.props.weatherForecastData
             });
-            console.log(this.state);
         }
     }
 

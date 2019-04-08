@@ -12,11 +12,11 @@ import { convertWindUnits } from "../../../Services/constants";
 export default class CurrentWeather extends Component {
     constructor(host, props) {
         super(host, props);
-        AppState.watch("WEATHERDATA", this.updateMyself);
-        AppState.watch("CURRENTUNIT", this.updateMyself);
+        AppState.watch("WEATHERDATA", this.updateData);
+        AppState.watch("CURRENTUNIT", this.updateData);
     }
 
-    updateMyself(substate) {
+    updateData(substate) {
         this.updateState(substate);
     }
 
@@ -27,7 +27,7 @@ export default class CurrentWeather extends Component {
         this.state = {
             currentUnit: currentUnit
         };
-        this.updateMyself = this.updateMyself.bind(this);
+        this.updateData = this.updateData.bind(this);
     }
 
     render() {

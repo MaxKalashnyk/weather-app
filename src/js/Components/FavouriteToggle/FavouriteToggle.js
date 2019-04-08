@@ -22,8 +22,8 @@ export default class FavouriteToggle extends Component {
     }
 
     handleFavouritePlace({ target }) {
-        if (target.classList.contains("add-to-favourite")) {
-            console.log(this.state);
+        if (target.matches(".add-to-favourite")) {
+            // console.log(this.state);
 
             if (this.state.weatherData) {
                 const formattedPlace =
@@ -45,7 +45,6 @@ export default class FavouriteToggle extends Component {
     }
 
     render() {
-
         return [
             {
                 tag: "button",

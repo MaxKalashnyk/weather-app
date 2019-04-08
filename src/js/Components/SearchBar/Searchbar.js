@@ -1,8 +1,5 @@
 import Component from "../../framework/Component";
 import { initAutocomplete } from "../../../Services/constants";
-import { currentWeaterURLString } from "../../../Services/constants";
-import { weatherForecastURLString } from "../../../Services/constants";
-import { putItemToLocalStorage } from "../../../Services/constants";
 import AppState from "../../../Services/AppState";
 import WeatherDataService from "../../../Services/WeatherDataService";
 import UnitsToggle from "../UnitsToggle/UnitsToggle";
@@ -11,20 +8,9 @@ import FavouriteToggle from "../FavouriteToggle/FavouriteToggle";
 export default class Searchbar extends Component {
     constructor(host, props) {
         super(host, props);
-        AppState.watch("FAVOURITEPLACES", this.updateMyself);
     }
 
     init() {
-        const storageRecentlyViewedList = localStorage.getItem(
-            "recentlyViewedPlaces"
-        )
-            ? JSON.parse(localStorage.getItem("recentlyViewedPlaces"))
-            : [];
-
-        this.state = {
-            storageRecentlyViewedList: storageRecentlyViewedList
-        };
-
         this.input = document.createElement("input");
         this.input.type = "text";
         this.input.setAttribute("placeholder", "Location");
@@ -33,7 +19,6 @@ export default class Searchbar extends Component {
         this.input.classList.add("main-search-input");
 
         [
-            "updateMyself",
             "handleSubmit",
             "handleForecastData",
             "checkItemAndPushToArray",
@@ -41,10 +26,6 @@ export default class Searchbar extends Component {
         ].forEach(
             methodName => (this[methodName] = this[methodName].bind(this))
         );
-    }
-
-    updateMyself(substate) {
-        this.updateState(substate);
     }
 
     handleSmth() {
@@ -56,20 +37,10 @@ export default class Searchbar extends Component {
         this.props.formattedPlace = place.formatted_address;
         this.props.placeId = place.id;
 
-        this.checkItemAndPushToArray(this.state.storageRecentlyViewedList);
-
-        const urlsArray = [
-            WeatherDataService.getWeatherURLS(
-                currentWeaterURLString,
-                this.props.place
-            ),
-            WeatherDataService.getWeatherURLS(
-                weatherForecastURLString,
-                this.props.place
-            )
-        ];
-
-        WeatherDataService.getWeather(urlsArray, this.handleForecastData);
+        WeatherDataService.getWeatherData(
+            this.props.place,
+            this.handleForecastData
+        );
 
         this.input.value = "";
     }
@@ -95,11 +66,15 @@ export default class Searchbar extends Component {
 
     handleForecastData(data) {
         if (data && data.length > 0) {
-            this.props.weatherData = {
-                ...data[0],
+            const dataObj = {
                 placeId: this.props.placeId,
                 place: this.props.place,
                 formattedPlace: this.props.formattedPlace
+            };
+
+            this.props.weatherData = {
+                ...data[0],
+                ...dataObj
             };
             this.props.weatherForecastData = data[1];
             AppState.update("WEATHERDATA", {
@@ -108,13 +83,7 @@ export default class Searchbar extends Component {
             AppState.update("WEATHERFORECASTDATA", {
                 weatherForecastData: this.props.weatherForecastData
             });
-            AppState.update("RECENTLYVIEWEDPLACES", {
-                storageRecentlyViewedList: this.state.storageRecentlyViewedList
-            });
-            putItemToLocalStorage(
-                "recentlyViewedPlaces",
-                this.state.storageRecentlyViewedList
-            );
+            AppState.update("RECENTLYVIEWEDPLACES", dataObj);
         }
     }
 

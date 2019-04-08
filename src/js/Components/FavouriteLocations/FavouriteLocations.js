@@ -1,7 +1,5 @@
 import Component from "../../framework/Component";
 import AppState from "../../../Services/AppState";
-import { currentWeaterURLString } from "../../../Services/constants";
-import { weatherForecastURLString } from "../../../Services/constants";
 import { putItemToLocalStorage } from "../../../Services/constants";
 import { scrollableBlockWrapClassFavourite } from "../../../Services/constants";
 import WeatherDataService from "../../../Services/WeatherDataService";
@@ -40,7 +38,6 @@ export default class FavouriteLocations extends Component {
             "clearFavouritePlacesList",
             "getWeatherByPlaceItem",
             "handleForecastData",
-            "getWeatherData",
             "handleFavouritePlace",
             "weatherCurrentUpdate"
         ].forEach(
@@ -106,15 +103,21 @@ export default class FavouriteLocations extends Component {
     }
 
     getWeatherByPlaceItem({ target }) {
-        if (event.target.classList.contains("user-activity-list-item")) {
+        if (target.matches(".user-activity-list-item")) {
             this.props.itemDataName = target.dataset.name;
             this.props.placeId = target.dataset.placeid;
 
             if (!this.state.weatherData) {
-                this.getWeatherData(this.props.itemDataName);
+                WeatherDataService.getWeatherData(
+                    this.props.itemDataName,
+                    this.handleForecastData
+                );
             } else {
                 if (this.state.weatherData.placeId !== this.props.placeId) {
-                    this.getWeatherData(this.props.itemDataName);
+                    WeatherDataService.getWeatherData(
+                        this.props.itemDataName,
+                        this.handleForecastData
+                    );
                 } else {
                     return;
                 }
@@ -122,17 +125,17 @@ export default class FavouriteLocations extends Component {
         }
     }
 
-    getWeatherData(cityName) {
-        const urlsArray = [
-            WeatherDataService.getWeatherURLS(currentWeaterURLString, cityName),
-            WeatherDataService.getWeatherURLS(
-                weatherForecastURLString,
-                cityName
-            )
-        ];
+    // getWeatherData(cityName) {
+    //     const urlsArray = [
+    //         WeatherDataService.getWeatherURLS(currentWeaterURLString, cityName),
+    //         WeatherDataService.getWeatherURLS(
+    //             weatherForecastURLString,
+    //             cityName
+    //         )
+    //     ];
 
-        WeatherDataService.getWeather(urlsArray, this.handleForecastData);
-    }
+    //     WeatherDataService.getWeather(urlsArray, this.handleForecastData);
+    // }
 
     handleForecastData(data) {
         if (data && data.length > 0) {
