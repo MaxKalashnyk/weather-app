@@ -53,12 +53,15 @@ body {
     background-size: 25px;
     color: $text;
     @include transition(background-color);
+
     &:hover {
         background-color: $backgroundItemHover;
     }
+
     &:focus {
         background-color: $backgroundItemHover;
     }
+
     @include mediaQuery(400) {
         width: 100%;
     }
@@ -77,9 +80,11 @@ body {
     margin-right: 5px;
     cursor: pointer;
     @include transition(all);
+
     &:not(:disabled):hover {
         background-color: $backgroundItemHover;
     }
+
     &:disabled {
         cursor: default;
     }
@@ -97,9 +102,11 @@ body {
     padding: 0 10px;
     color: $text;
     @include transition(all);
+
     &:hover {
         background-color: $backgroundItemHover;
     }
+
     option {
         color: $backgroundColor;
     }
@@ -117,9 +124,11 @@ body {
 .forecast-details {
     display: flex;
     justify-content: space-between;
+
     @include mediaQuery(600) {
         flex-wrap: wrap;
     }
+
     @include mediaQuery(400) {
         flex-direction: column;
     }
@@ -129,6 +138,7 @@ body {
     @include mediaQuery(600) {
         width: 50%;
     }
+
     @include mediaQuery(400) {
         width: 100%;
         margin-bottom: 20px;
@@ -137,10 +147,12 @@ body {
 
 .forecast-item:nth-child(2) {
     text-align: center;
+
     @include mediaQuery(600) {
         order: 3;
         margin: 0 auto;
     }
+
     @include mediaQuery(400) {
         text-align: left;
         margin: 0 0 20px;
@@ -148,8 +160,7 @@ body {
 }
 
 .forecast-item:last-child {
-    @include mediaQuery(600) {
-    }
+    @include mediaQuery(600) {}
 }
 
 .forecast-current {
@@ -162,6 +173,7 @@ body {
 
 .forecast-item-text {
     margin-bottom: 5px;
+
     &:last-child {
         margin-bottom: 0;
     }
@@ -189,6 +201,7 @@ body {
 .forecast-item-text-icon-humidity {
     background-image: url("#{$imagePath}/humidity.svg");
 }
+
 .forecast-item-text-icon-wind {
     background-image: url("#{$imagePath}/wind.svg");
 }
@@ -196,6 +209,7 @@ body {
 .forecast-item-temps {
     display: flex;
     justify-content: space-between;
+
     @include mediaQuery(600) {
         justify-content: flex-start;
     }
@@ -205,6 +219,7 @@ body {
     font-size: 72px;
     font-weight: 600;
     text-align: center;
+
     @include mediaQuery(600) {
         text-align: left;
     }
@@ -217,6 +232,7 @@ body {
     background-repeat: no-repeat;
     background-size: 100px;
     margin: 0 auto;
+
     @include mediaQuery(600) {
         margin: 0;
     }
@@ -258,6 +274,7 @@ body {
 .forecast-nearest-days {
     margin-bottom: 20px;
     margin-left: -10px;
+
     @include mediaQuery(600) {
         flex-wrap: wrap;
         justify-content: flex-start;
@@ -265,7 +282,7 @@ body {
     }
 }
 
-.forecast-nearest-days > div {
+.forecast-nearest-days>div {
     height: 150px;
     flex-grow: 1;
     align-items: center;
@@ -278,9 +295,11 @@ body {
     background-color: $backgroundItem;
     cursor: pointer;
     @include transition(background-color);
+
     &:hover {
         background-color: $backgroundItemHover;
     }
+
     @include mediaQuery(600) {
         width: calc(33.33% - 10px);
         margin-bottom: 20px;
@@ -324,21 +343,27 @@ body {
 .day-forecast-weather-sunny {
     background-image: url("#{$imagePath}/animated/day.svg");
 }
+
 .day-forecast-weather-cloudy-small {
     background-image: url("#{$imagePath}/animated/cloudy-day-1.svg");
 }
+
 .day-forecast-weather-cloudy {
     background-image: url("#{$imagePath}/animated/cloudy-day-3.svg");
 }
+
 .day-forecast-weather-shower-rain {
     background-image: url("#{$imagePath}/animated/rainy-7.svg");
 }
+
 .day-forecast-weather-snow {
     background-image: url("#{$imagePath}/animated/snowy-6.svg");
 }
+
 .day-forecast-weather-rain {
     background-image: url("#{$imagePath}/animated/rainy-3.svg");
 }
+
 .day-forecast-weather-thunder {
     background-image: url("#{$imagePath}/animated/thunder.svg");
 }
@@ -352,23 +377,26 @@ body {
 .user-activity-wrap {
     min-height: 200px;
     margin-left: -20px;
+
     @include mediaQuery(768) {
         margin-left: 0;
         flex-direction: column;
     }
 }
 
-.user-activity-wrap > div {
+.user-activity-wrap>div {
     width: 50%;
     margin-left: 20px;
     padding: 20px;
     border-radius: $borderRadius;
     background-color: $backgroundItem;
+
     &:first-child {
         @include mediaQuery(768) {
             margin-bottom: 20px;
         }
     }
+
     &:last-child {
         margin-right: 0;
     }
@@ -413,6 +441,7 @@ body {
     border: none;
     border-radius: $borderRadius;
     @include transition(background-color);
+
     &:hover {
         background-color: $backgroundItemHover;
     }
@@ -430,9 +459,11 @@ body {
     padding: 0 5px;
     cursor: pointer;
     @include transition(all);
+
     &:last-child {
         margin-bottom: 0;
     }
+
     &:hover {
         background-color: $backgroundItem;
         border-radius: $borderRadius;

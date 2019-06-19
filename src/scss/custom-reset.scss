@@ -24,6 +24,7 @@ body {
     display: block;
     max-width: 100%;
     height: auto;
+
     &.img-width {
         width: 100%;
     }
@@ -50,6 +51,7 @@ p {
 ul {
     margin: 0;
     padding: 0;
+
     li {
         list-style: none;
     }
@@ -58,6 +60,7 @@ ul {
 figure {
     margin: 0;
 }
+
 h1,
 h2,
 h3,
